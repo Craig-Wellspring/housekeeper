@@ -1,18 +1,21 @@
-import firebase from 'firebase/app';
+import { createClient } from '@supabase/supabase-js';
 
-const signInUser = () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider);
+const supabase = createClient(process.env.REACT_APP_SUPABASE_DBURL, process.env.REACT_APP_SUPABASE_API_KEY);
+
+const signInUser = async () => {
+  const { user } = await supabase.auth.signIn({
+    provider: 'google',
+  });
+
+  return user;
 };
 
-const signOutUser = () => new Promise((resolve, reject) => {
-  firebase.auth().signOut().then(resolve).catch(reject);
-});
+const signOutUser = async () => {
+  await supabase.auth.signOut();
+};
 
-const currentUID = () => firebase.auth().currentUser?.uid;
-
-const currentUser = () => firebase.auth().currentUser;
+const currentUser = supabase.auth.user();
 
 export {
-  signInUser, signOutUser, currentUID, currentUser,
+  supabase, signInUser, signOutUser, currentUser,
 };
