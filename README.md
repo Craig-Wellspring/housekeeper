@@ -10,4 +10,6 @@
 
 ### [GitHub](https://github.com/Craig-Wellspring/housekeeper)
 
-### [Project Board](https://github.com/Craig-Wellspring/housekeeper/projects/1)
+### [MVP Project Board](https://github.com/Craig-Wellspring/housekeeper/projects/1)
+
+### [Stretch Project Board](https://github.com/Craig-Wellspring/housekeeper/projects/2)
