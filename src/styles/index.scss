@@ -4,3 +4,30 @@
 body {
   background-color: $bgColor !important;
 }
+
+.App {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+
+  background-color: white;
+}
+
+.panel-title {
+  font-size: 24pt;
+  text-align: center;
+}

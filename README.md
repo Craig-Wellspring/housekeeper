@@ -1,4 +1,5 @@
 # Housekeeper
+#### Developer: [Craig Wellspring](https://github.com/Craig-Wellspring/)
 
 ### [Netlify](https://house-keeper.netlify.app/)
 
