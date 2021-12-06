@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { currentUser } from '../api/auth';
-import { getHousemate } from '../api/data/housemates-data';
+import { createHousemate, getHousemate } from '../api/data/housemates-data';
 
 export default function Authenticated() {
   const history = useHistory();
@@ -15,7 +15,7 @@ export default function Authenticated() {
         history.push('/household');
       }
     } else {
-      // create Housemate in db
+      createHousemate();
       history.push('/household');
     }
   };
