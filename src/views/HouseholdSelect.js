@@ -6,8 +6,6 @@ import { currentUser } from '../api/auth';
 import { createHousehold } from '../api/data/households-data';
 import { getHousemate } from '../api/data/housemates-data';
 
-const Title = styled.div``;
-
 const Form = styled.form``;
 
 const Label = styled.div`
@@ -106,7 +104,7 @@ export default function HouseholdSelect() {
   return (
     <>
       <div className="panel">
-        <Title className="panel-title">Create or Join a Household</Title>
+        <div className="panel-title">Create or Join a Household</div>
         <CreateButton
           type="button"
           onClick={() => setShowCreate(true)}
@@ -128,7 +126,7 @@ export default function HouseholdSelect() {
         onRequestClose={() => setShowCreate(false)}
         style={modalStyle}
       >
-        <Title className="panel-title">Create a New Household</Title>
+        <div className="panel-title">Create a New Household</div>
         <Form onSubmit={handleCreateSubmit}>
           <Label htmlFor="name">
             Household Name
@@ -163,7 +161,7 @@ export default function HouseholdSelect() {
         onRequestClose={() => setShowJoin(false)}
         style={modalStyle}
       >
-        <Title className="panel-title">Join a Household</Title>
+        <div className="panel-title">Join a Household</div>
         <Form onSubmit={handleJoinSubmit}>
           <Label htmlFor="code">
             Invite Code

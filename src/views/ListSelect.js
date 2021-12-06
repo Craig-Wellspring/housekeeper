@@ -4,8 +4,7 @@ import ListIcon from '../components/listables/ListIcon';
 import { currentUser } from '../api/auth';
 import { getHousemate } from '../api/data/housemates-data';
 import { getLists } from '../api/data/lists-data';
-
-const Title = styled.div``;
+import AddListButton from '../components/buttons/AddListButton';
 
 const ListContainer = styled.div`
   display: flex;
@@ -19,19 +18,24 @@ const ListContainer = styled.div`
 
 export default function ListSelect() {
   const [lists, setLists] = useState([]);
+  const [customLists, setCustomLists] = useState([]);
 
   useEffect(() => {
     getHousemate(currentUser().id).then((user) => getLists(user.hh_id).then((hhLists) => setLists(hhLists)));
+    setCustomLists();
   }, []);
 
   return (
     <div className="panel">
-      <Title className="panel-title">List Select</Title>
+      <div className="panel-title">List Select</div>
       <ListContainer>
         {lists?.map((list) => (
           <ListIcon key={list.id} list={list} />
         ))}
-        {/* <AddListButton /> */}
+        {customLists?.map((cList) => (
+          <ListIcon key={cList.id} cList={cList} />
+        ))}
+        <AddListButton />
       </ListContainer>
     </div>
   );
