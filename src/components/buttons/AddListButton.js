@@ -16,8 +16,12 @@ const Icon = styled.div`
 `;
 
 export default function AddListButton() {
+  const handleClick = () => {
+    console.warn('Add list');
+  };
+
   return (
-    <Icon>
+    <Icon onClick={handleClick}>
       <i style={{ fontSize: '2em' }} className="fas fa-plus" />
     </Icon>
   );

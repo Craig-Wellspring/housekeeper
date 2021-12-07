@@ -36,9 +36,11 @@ const ButtonContainer = styled.div`
   gap: 10px;
 `;
 
-function ListItem({ data, setItems }) {
+function ListItem({
+  data, setItems, showEdit, showDelete,
+}) {
   const [checked, setChecked] = useState(data.completed);
-  const [showEdit, setShowEdit] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
   const [editInput, setEditInput] = useState('');
 
   const handleCheck = () => {
@@ -53,12 +55,12 @@ function ListItem({ data, setItems }) {
   };
 
   const handleEdit = () => {
-    if (showEdit) {
+    if (showEditForm) {
       updateItemName(data.id, editInput).then(setItems);
     } else {
       setEditInput(data.name);
     }
-    setShowEdit(!showEdit);
+    setShowEditForm(!showEditForm);
   };
 
   const handleDelete = () => {
@@ -68,12 +70,14 @@ function ListItem({ data, setItems }) {
   return (
     <Item>
       <Checkbox type="checkbox" onChange={handleCheck} checked={checked} />
-      {showEdit ? (
+      {showEditForm ? (
         <EditInput type="text" value={editInput} onChange={handleChange} />
       ) : (
         data.name
       )}
-      <ButtonContainer>
+      <ButtonContainer>{
+        showEdit
+        && (
         <button
           type="button"
           className="btn btn-sm btn-primary"
@@ -81,13 +85,19 @@ function ListItem({ data, setItems }) {
         >
           <i className="fas fa-edit" />
         </button>
-        <button
-          type="button"
-          className="btn btn-sm btn-danger"
-          onClick={handleDelete}
-        >
-          <i className="fas fa-trash" />
-        </button>
+        )
+}
+        {
+          showDelete && (
+          <button
+            type="button"
+            className="btn btn-sm btn-danger"
+            onClick={handleDelete}
+          >
+            <i className="fas fa-trash" />
+          </button>
+          )
+}
       </ButtonContainer>
     </Item>
   );
@@ -96,6 +106,8 @@ function ListItem({ data, setItems }) {
 ListItem.propTypes = {
   data: PropTypes.shape().isRequired,
   setItems: PropTypes.func.isRequired,
+  showEdit: PropTypes.bool.isRequired,
+  showDelete: PropTypes.bool.isRequired,
 };
 
 export default ListItem;

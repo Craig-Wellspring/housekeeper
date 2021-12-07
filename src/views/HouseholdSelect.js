@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { currentUser } from '../api/auth';
-import { createHousehold } from '../api/data/households-data';
-import { getHousemate } from '../api/data/housemates-data';
+import { createHousehold, validateJoinCode } from '../api/data/households-data';
+import { getHousemate, joinHousehold } from '../api/data/housemates-data';
 
 const Form = styled.form``;
 
@@ -50,20 +49,26 @@ const initialCreateState = {
   HoH_id: '',
 };
 
-const initialJoinState = {
-  code: '',
-};
+const JoinError = styled.div`
+  color: red;
+  font-weight: bold;
+  text-align: center;
+`;
+const joinError = 'This code did not match any Households';
 
 export default function HouseholdSelect() {
   const history = useHistory();
+
+  const [error, setError] = useState(false);
+
   const [showCreate, setShowCreate] = useState(false);
   const [createFormInput, setCreateFormInput] = useState(initialCreateState);
 
   const [showJoin, setShowJoin] = useState(false);
-  const [joinFormInput, setJoinFormInput] = useState(initialJoinState);
+  const [joinFormInput, setJoinFormInput] = useState('');
 
   const getHousemateID = async () => {
-    const mate = await getHousemate(currentUser().id);
+    const mate = await getHousemate();
     setCreateFormInput((prevState) => ({
       ...prevState,
       HoH_id: mate.id,
@@ -74,9 +79,9 @@ export default function HouseholdSelect() {
     getHousemateID();
   }, []);
 
-  const handleCreateSubmit = (e) => {
+  const handleCreateSubmit = async (e) => {
     e.preventDefault();
-    createHousehold(createFormInput.name, createFormInput.HoH_id);
+    await createHousehold(createFormInput.name, createFormInput.HoH_id);
     history.push('/select');
   };
 
@@ -87,18 +92,24 @@ export default function HouseholdSelect() {
     }));
   };
 
-  const handleJoinSubmit = (e) => {
+  const openJoinModal = () => {
+    setShowJoin(true);
+    setError(false);
+  };
+
+  const handleJoinSubmit = async (e) => {
     e.preventDefault();
-    console.warn(joinFormInput);
-    // Compare invite codes
-    // Assign user an HH ID
+    const hhID = await validateJoinCode(joinFormInput);
+    if (hhID) {
+      await joinHousehold(hhID);
+      history.push('/select');
+    } else {
+      setError(true);
+    }
   };
 
   const handleJoinChange = (e) => {
-    setJoinFormInput((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
+    setJoinFormInput(e.target.value);
   };
 
   return (
@@ -114,7 +125,7 @@ export default function HouseholdSelect() {
         </CreateButton>
         <JoinButton
           type="button"
-          onClick={() => setShowJoin(true)}
+          onClick={openJoinModal}
           className="btn btn-primary"
         >
           Join
@@ -169,9 +180,10 @@ export default function HouseholdSelect() {
               name="code"
               type="text"
               onChange={handleJoinChange}
-              value={joinFormInput.code}
+              value={joinFormInput}
             />
           </Label>
+          {error && <JoinError>{joinError}</JoinError>}
           <ButtonTray>
             <SubmitButton
               type="submit"
