@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import listNames from '../../JSON/listNames.json';
+import listIcons from '../../JSON/listIcons.json';
 
 const Icon = styled.div`
   display: flex;
@@ -19,26 +21,6 @@ const Icon = styled.div`
   border: 2px solid black;
   margin: 10px;
 `;
-
-const listNames = {
-  todo: 'To-Do',
-  grocery: 'Groceries',
-  shopping: 'Shopping',
-  maintenance: 'Maintenance',
-  cleaning: 'Cleaning',
-  bulletin: 'Bulletin Board',
-  pets: 'Pets',
-};
-
-const listIcons = {
-  todo: 'clipboard-list',
-  grocery: 'utensils',
-  shopping: 'tag',
-  maintenance: 'wrench',
-  cleaning: 'broom',
-  bulletin: 'thumbtack',
-  pets: 'paw',
-};
 
 function ListIcon({ list }) {
   const history = useHistory();

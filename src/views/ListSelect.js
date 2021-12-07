@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ListIcon from '../components/listables/ListIcon';
-import { currentUser } from '../api/auth';
-import { getHousemate } from '../api/data/housemates-data';
 import { getLists } from '../api/data/lists-data';
 import AddListButton from '../components/buttons/AddListButton';
 
@@ -21,7 +19,7 @@ export default function ListSelect() {
   const [customLists, setCustomLists] = useState([]);
 
   useEffect(() => {
-    getHousemate(currentUser().id).then((user) => getLists(user.hh_id).then((hhLists) => setLists(hhLists)));
+    getLists().then(setLists);
     setCustomLists();
   }, []);
 
