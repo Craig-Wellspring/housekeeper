@@ -1,13 +1,14 @@
 import React from 'react';
-import { signInUser } from '../api/auth';
+import styled from 'styled-components';
+import SignInButton from '../components/buttons/SignInButton';
+
+const Panel = styled.div``;
 
 export default function SignIn() {
   return (
-    <div className="text-center mt-5">
-      <h1>Welcome! Sign In!</h1>
-      <button type="button" className="btn btn-success" onClick={signInUser}>
-        Sign In
-      </button>
-    </div>
+    <Panel className="panel">
+      <div className="panel-title">Welcome! Sign In!</div>
+      <SignInButton />
+    </Panel>
   );
 }
