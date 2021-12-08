@@ -21,6 +21,12 @@ const getList = async () => {
   return data[0];
 };
 
+const getListID = async () => {
+  const list = await getList();
+
+  return list.id;
+};
+
 const getListData = async (type) => {
   const hhid = await getUserHHID();
   const { data } = await supabase
@@ -30,12 +36,6 @@ const getListData = async (type) => {
     .eq('type', type);
 
   return data[0];
-};
-
-const getListID = async () => {
-  const list = await getList();
-
-  return list.id;
 };
 
 const generateLists = async () => {

@@ -16,15 +16,15 @@ const Checkbox = styled.input`
 `;
 
 export default function ListSetting({ data }) {
-  const [checked, setChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
-    getListData(data.type).then((list) => setChecked(!list.hidden));
+    getListData(data.type).then((list) => setIsChecked(!list.hidden));
   }, []);
 
   const handleCheck = async () => {
-    await setListHidden(data.id, checked);
-    setChecked(!checked);
+    await setListHidden(data.id, isChecked);
+    setIsChecked(!isChecked);
   };
 
   return (
@@ -32,7 +32,7 @@ export default function ListSetting({ data }) {
       <Checkbox
         type="checkbox"
         onChange={handleCheck}
-        checked={checked}
+        checked={isChecked}
       />
       <div>{listNames[data.type]}</div>
     </Container>

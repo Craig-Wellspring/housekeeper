@@ -13,30 +13,38 @@ const ListContainer = styled.div`
   width: 100%;
 `;
 
+const CategoryLabel = styled.div`
+  text-align: center;
+  font-size: 120%;
+  text-decoration: underline;
+`;
+
 export default function List() {
   const [items, setItems] = useState([]);
-  const [filteredItems, setFilteredItems] = useState([]);
+  const [completeItems, setCompleteItems] = useState([]);
+  const [incompleteItems, setIncompleteItems] = useState([]);
 
   const [showHidden, setShowHidden] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
 
-  useEffect(() => {
+  useEffect(async () => {
     let isMounted = true;
-    getItems().then((i) => {
-      if (isMounted) {
-        setItems(i);
-        setFilteredItems(items.filter((item) => !item.completed));
-      }
-    });
+    const listItems = await getItems();
+    if (isMounted) {
+      setItems(listItems);
+      setIncompleteItems(items.filter((item) => !item.completed));
+      setCompleteItems(items.filter((item) => item.completed));
+    }
     return () => {
       isMounted = false;
     };
   }, []);
 
   useEffect(() => {
-    setFilteredItems(items.filter((item) => item.completed === showHidden));
-  }, [showHidden, items]);
+    setIncompleteItems(items.filter((item) => !item.completed));
+    setCompleteItems(items.filter((item) => item.completed));
+  }, [items]);
 
   return (
     <div className="panel">
@@ -72,7 +80,18 @@ export default function List() {
         </button>
       </div>
       <ListContainer>
-        {filteredItems?.map((item) => (
+        {showHidden && <CategoryLabel>Incomplete</CategoryLabel>}
+        {incompleteItems?.map((item) => (
+          <ListItem
+            key={item.id}
+            data={item}
+            setItems={setItems}
+            showEdit={showEdit}
+            showDelete={showDelete}
+          />
+        ))}
+        {showHidden && <CategoryLabel>Complete</CategoryLabel>}
+        {showHidden && completeItems?.map((item) => (
           <ListItem
             key={item.id}
             data={item}

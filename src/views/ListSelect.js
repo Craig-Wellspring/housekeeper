@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import ListIcon from '../components/listables/ListIcon';
 import { getLists } from '../api/data/lists-data';
 import AddListButton from '../components/buttons/AddListButton';
+import { getCustomLists } from '../api/data/customlists-data';
 
 const ListContainer = styled.div`
   display: flex;
@@ -18,9 +19,15 @@ export default function ListSelect() {
   const [lists, setLists] = useState([]);
   const [customLists, setCustomLists] = useState([]);
 
-  useEffect(() => {
-    getLists().then(setLists);
-    setCustomLists();
+  useEffect(async () => {
+    let isMounted = true;
+    const hhLists = await getLists();
+    const cLists = await getCustomLists();
+    if (isMounted) {
+      setLists(hhLists);
+      setCustomLists(cLists);
+    }
+    return (() => { isMounted = false; });
   }, []);
 
   return (

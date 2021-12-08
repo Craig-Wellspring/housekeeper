@@ -84,18 +84,24 @@ export default function Settings() {
 
   const [showCode, setShowCode] = useState(false);
   const [inviteCode, setInviteCode] = useState('');
-  const [copied, setCopied] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
 
   useEffect(async () => {
-    getJoinCode().then(setInviteCode);
+    let isMounted = true;
+    const code = await getJoinCode();
     const hh = await getHousehold();
-    setHHName(hh.name);
     const hm = await getHousemate();
-    setHMName(hm.name);
-    if (hh.HoH_id === hm.id) {
-      setUserHoH(true);
+    const hhLists = await getLists();
+    if (isMounted) {
+      setInviteCode(code);
+      setHHName(hh.name);
+      setHMName(hm.name);
+      setLists(hhLists);
+      if (hh.HoH_id === hm.id) {
+        setUserHoH(true);
+      }
     }
-    getLists().then(setLists);
+    return (() => { isMounted = false; });
   }, []);
 
   const hhNameEdit = () => {
@@ -128,7 +134,7 @@ export default function Settings() {
   };
 
   const copyCode = () => {
-    navigator.clipboard.writeText(inviteCode).then(() => setCopied(true));
+    navigator.clipboard.writeText(inviteCode).then(() => setIsCopied(true));
   };
 
   const handleDeleteHH = async () => {
@@ -196,18 +202,18 @@ export default function Settings() {
               className="btn btn-success"
               onClick={() => {
                 setShowCode(false);
-                setCopied(false);
+                setIsCopied(false);
               }}
             >
               {inviteCode}
             </button>
             <button
               type="button"
-              className={`btn btn-${copied ? 'success' : 'secondary'}`}
+              className={`btn btn-${isCopied ? 'success' : 'secondary'}`}
               onClick={copyCode}
             >
               <i
-                className={`fas fa-${copied ? 'clipboard-check' : 'clipboard'}`}
+                className={`fas fa-${isCopied ? 'clipboard-check' : 'clipboard'}`}
               />
             </button>
           </div>
