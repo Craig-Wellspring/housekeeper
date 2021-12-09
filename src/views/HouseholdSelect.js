@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { createHousehold, validateJoinCode } from '../api/data/households-data';
 import { getHousemate, joinHousehold } from '../api/data/housemates-data';
+import { Panel, PanelTitle } from '../components/StyledComponents';
 
 const Form = styled.form``;
 
@@ -114,8 +115,8 @@ export default function HouseholdSelect() {
 
   return (
     <>
-      <div className="panel">
-        <div className="panel-title">Create or Join a Household</div>
+      <Panel>
+        <PanelTitle>Create or Join a Household</PanelTitle>
         <CreateButton
           type="button"
           onClick={() => setShowCreate(true)}
@@ -130,14 +131,14 @@ export default function HouseholdSelect() {
         >
           Join
         </JoinButton>
-      </div>
+      </Panel>
 
       <Modal
         isOpen={showCreate}
         onRequestClose={() => setShowCreate(false)}
         style={modalStyle}
       >
-        <div className="panel-title">Create a New Household</div>
+        <PanelTitle>Create a New Household</PanelTitle>
         <Form onSubmit={handleCreateSubmit}>
           <Label htmlFor="name">
             Household Name
@@ -172,7 +173,7 @@ export default function HouseholdSelect() {
         onRequestClose={() => setShowJoin(false)}
         style={modalStyle}
       >
-        <div className="panel-title">Join a Household</div>
+        <PanelTitle>Join a Household</PanelTitle>
         <Form onSubmit={handleJoinSubmit}>
           <Label htmlFor="code">
             Invite Code

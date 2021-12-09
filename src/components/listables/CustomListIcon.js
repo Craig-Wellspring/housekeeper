@@ -1,36 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import listNames from '../../JSON/listNames.json';
 import listIcons from '../../JSON/listIcons.json';
 import { Icon } from '../StyledComponents';
 
-function ListIcon({ list }) {
+function CustomListIcon({ cList }) {
   const history = useHistory();
 
   const handleClick = () => {
-    history.push(`/${list.type}`);
+    history.push(`/custom/${cList.id}`);
   };
 
   return (
     <>
-      {!list.hidden && (
+      {!cList.hidden && (
       <Icon onClick={handleClick}>
-        <i style={{ fontSize: '2em' }} className={`fas fa-${listIcons[list.type]}`} />
-        {listNames[list.type]}
+        <i style={{ fontSize: '2em' }} className={`fas fa-${listIcons.custom}`} />
+        {cList.name}
       </Icon>
       )}
     </>
   );
 }
 
-ListIcon.propTypes = {
-  list: PropTypes.shape({
+CustomListIcon.propTypes = {
+  cList: PropTypes.shape({
     id: PropTypes.number.isRequired,
     hh_id: PropTypes.number.isRequired,
-    type: PropTypes.string.isRequired,
+    hm_id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    private: PropTypes.bool.isRequired,
     hidden: PropTypes.bool.isRequired,
   }).isRequired,
 };
 
-export default ListIcon;
+export default CustomListIcon;

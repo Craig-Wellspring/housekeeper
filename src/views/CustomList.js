@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getCList } from '../api/data/customlists-data';
 import { getItems } from '../api/data/items-data';
-import { currentListType } from '../api/data/lists-data';
 import ListItem from '../components/listables/ListItem';
 import CreateItemForm from '../components/panels/CreateItemForm';
 import {
   CategoryLabel, ListContainer, Panel, PanelTitle,
 } from '../components/StyledComponents';
-import listNames from '../JSON/listNames.json';
 
-export default function List() {
+export default function CustomList() {
+  const [listName, setListName] = useState('Custom List');
+
   const [items, setItems] = useState([]);
   const [completeItems, setCompleteItems] = useState([]);
   const [incompleteItems, setIncompleteItems] = useState([]);
@@ -17,10 +19,16 @@ export default function List() {
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
 
+  const { id } = useParams();
+
   useEffect(async () => {
     let isMounted = true;
+    const list = await getCList(id);
     const listItems = await getItems();
-    if (isMounted) { setItems(listItems); }
+    if (isMounted) {
+      setListName(list.name);
+      setItems(listItems);
+    }
     return () => { isMounted = false; };
   }, []);
 
@@ -31,7 +39,7 @@ export default function List() {
 
   return (
     <Panel>
-      <PanelTitle>{listNames[currentListType()]}</PanelTitle>
+      <PanelTitle>{listName}</PanelTitle>
       <CreateItemForm setItems={setItems} />
       <div style={{ display: 'flex', gap: '10px' }}>
         <button

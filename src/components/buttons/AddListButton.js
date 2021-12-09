@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import { createCList, getCustomLists } from '../../api/data/customlists-data';
 
 const Icon = styled.div`
   display: flex;
@@ -15,9 +17,11 @@ const Icon = styled.div`
   justify-content: center;
 `;
 
-export default function AddListButton() {
-  const handleClick = () => {
-    console.warn('Add list');
+export default function AddListButton({ setCustomLists }) {
+  const handleClick = async () => {
+    await createCList();
+    const lists = await getCustomLists();
+    setCustomLists(lists);
   };
 
   return (
@@ -26,3 +30,7 @@ export default function AddListButton() {
     </Icon>
   );
 }
+
+AddListButton.propTypes = {
+  setCustomLists: PropTypes.func.isRequired,
+};

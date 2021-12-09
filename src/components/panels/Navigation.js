@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import SignOutButton from '../buttons/SignOutButton';
 import SettingsButton from '../buttons/SettingsButton';
 import ListViewButton from '../buttons/ListViewButton';
-import { getUserHHID, getUserHMID } from '../../api/data/housemates-data';
+import { getUserHHID } from '../../api/data/housemates-data';
 
 const NavBar = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ export default function Navigation() {
   }, []);
 
   const test = async () => {
-    getUserHMID().then(console.warn);
+    console.warn(window.location.pathname.replace('/custom/', ''));
   };
 
   return (

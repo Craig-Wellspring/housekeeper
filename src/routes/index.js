@@ -7,6 +7,7 @@ import Settings from '../views/Settings';
 import List from '../views/List';
 import Bulletin from '../views/Bulletin';
 import Pets from '../views/Pets';
+import CustomList from '../views/CustomList';
 
 export default function Routes() {
   return (
@@ -22,6 +23,7 @@ export default function Routes() {
       />
       <Route exact path="/bulletin" component={Bulletin} />
       <Route exact path="/pets" component={Pets} />
+      <Route exact path="/custom/:id" component={CustomList} />
     </Switch>
   );
 }

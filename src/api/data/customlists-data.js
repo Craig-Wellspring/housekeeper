@@ -8,6 +8,15 @@ const getCustomLists = async () => {
   return data;
 };
 
+const getCList = async (listID) => {
+  const { data } = await supabase
+    .from('custom_lists')
+    .select('*')
+    .eq('id', listID);
+
+  return data[0];
+};
+
 const createCList = async () => {
   const hhid = await getUserHHID();
   const hmid = await getUserHMID();
@@ -39,13 +48,14 @@ const setCListName = async (id, string) => {
 
 const setCListHidden = async (id, bool) => {
   await supabase
-    .from('lists')
+    .from('custom_lists')
     .update({ hidden: bool })
     .eq('id', id);
 };
 
 export {
   getCustomLists,
+  getCList,
   createCList,
   setCListHidden,
   setCListID,

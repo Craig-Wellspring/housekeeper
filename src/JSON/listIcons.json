@@ -5,5 +5,6 @@
   "maintenance": "wrench",
   "cleaning": "broom",
   "bulletin": "thumbtack",
-  "pets": "paw"
+  "pets": "paw",
+  "custom": "list-ul"
 }

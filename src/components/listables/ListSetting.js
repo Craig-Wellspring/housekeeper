@@ -3,16 +3,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import listNames from '../../JSON/listNames.json';
 import { getListData, setListHidden } from '../../api/data/lists-data';
+import { Checkbox } from '../StyledComponents';
 
 const Container = styled.div`
   display: flex;
   gap: 10px;
   justify-content: left;
-`;
-
-const Checkbox = styled.input`
-  height: 25px;
-  width: 25px;
 `;
 
 export default function ListSetting({ data }) {

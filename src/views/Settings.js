@@ -14,6 +14,7 @@ import {
 } from '../api/data/housemates-data';
 import { getLists } from '../api/data/lists-data';
 import ListSetting from '../components/listables/ListSetting';
+import { Panel, PanelTitle, Section } from '../components/StyledComponents';
 
 const NamePanel = styled.div`
   display: flex;
@@ -47,24 +48,6 @@ const Label = styled.div`
   text-align: center;
   font-size: 120%;
   text-decoration: underline;
-`;
-
-const ListPanel = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 10px;
-  border: 1px solid black;
-`;
-
-const InvitePanel = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-
-  padding: 10px;
-  border: 1px solid black;
-  margin: 10px;
 `;
 
 export default function Settings() {
@@ -143,8 +126,8 @@ export default function Settings() {
   };
 
   return (
-    <div className="panel">
-      <div className="panel-title">Settings</div>
+    <Panel>
+      <PanelTitle>Settings</PanelTitle>
 
       <NamePanel id="hm-name">
         <LabelPanel>
@@ -188,12 +171,12 @@ export default function Settings() {
         )}
       </NamePanel>
 
-      <ListPanel>
+      <Section>
         <Label>Show Lists</Label>
         {lists.map((list) => <ListSetting key={list.id} data={list} />)}
-      </ListPanel>
+      </Section>
 
-      <InvitePanel>
+      <Section>
         <Label>Invite Code</Label>
         {showCode ? (
           <div style={{ display: 'flex', gap: '5px' }}>
@@ -226,7 +209,7 @@ export default function Settings() {
             Show Code
           </button>
         )}
-      </InvitePanel>
+      </Section>
 
       <button type="button" className="btn btn-danger" onClick={handleLeave}>
         Leave Household
@@ -240,6 +223,6 @@ export default function Settings() {
           Delete Household
         </button>
       )}
-    </div>
+    </Panel>
   );
 }

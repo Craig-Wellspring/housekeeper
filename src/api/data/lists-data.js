@@ -22,9 +22,15 @@ const getList = async () => {
 };
 
 const getListID = async () => {
-  const list = await getList();
+  const { pathname } = window.location;
+  let id;
+  if (pathname.includes('custom')) {
+    id = pathname.replace('/custom/', '');
+  } else {
+    id = await getList().then((list) => list.id);
+  }
 
-  return list.id;
+  return id;
 };
 
 const getListData = async (type) => {

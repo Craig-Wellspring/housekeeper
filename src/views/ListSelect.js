@@ -4,6 +4,8 @@ import ListIcon from '../components/listables/ListIcon';
 import { getLists } from '../api/data/lists-data';
 import AddListButton from '../components/buttons/AddListButton';
 import { getCustomLists } from '../api/data/customlists-data';
+import CustomListIcon from '../components/listables/CustomListIcon';
+import { Panel, PanelTitle } from '../components/StyledComponents';
 
 const ListContainer = styled.div`
   display: flex;
@@ -31,17 +33,17 @@ export default function ListSelect() {
   }, []);
 
   return (
-    <div className="panel">
-      <div className="panel-title">List Select</div>
+    <Panel>
+      <PanelTitle>List Select</PanelTitle>
       <ListContainer>
         {lists?.map((list) => (
           <ListIcon key={list.id} list={list} />
         ))}
         {customLists?.map((cList) => (
-          <ListIcon key={cList.id} cList={cList} />
+          <CustomListIcon key={cList.id} cList={cList} />
         ))}
-        <AddListButton />
+        <AddListButton setCustomLists={setCustomLists} />
       </ListContainer>
-    </div>
+    </Panel>
   );
 }
