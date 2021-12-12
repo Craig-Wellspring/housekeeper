@@ -14,6 +14,15 @@ const getHousemate = async () => {
   return data[0] ? data[0] : null;
 };
 
+const getHousemateByID = async (HMID) => {
+  const { data } = await supabase
+    .from('housemates')
+    .select('*')
+    .eq('id', HMID);
+
+  return data[0] ? data[0] : null;
+};
+
 const getUserHHID = async () => {
   const hm = await getHousemate();
 
@@ -64,6 +73,7 @@ const updateHousemateName = async (string) => {
 export {
   getHousemates,
   getHousemate,
+  getHousemateByID,
   getUserHHID,
   getUserHMID,
   createHousemate,

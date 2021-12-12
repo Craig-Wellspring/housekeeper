@@ -124,7 +124,7 @@ export default function List() {
       </ButtonContainer>
 
       <CreateItemForm setItems={setItems} />
-      <div style={{ display: 'flex', gap: '10px' }}>
+      <ButtonContainer>
         <button
           type="button"
           className={`btn btn-${showHidden ? 'success' : 'secondary'}`}
@@ -152,7 +152,7 @@ export default function List() {
         >
           <i className="fas fa-trash" />
         </button>
-      </div>
+      </ButtonContainer>
       <ListContainer>
         {showHidden && <CategoryLabel>Incomplete</CategoryLabel>}
         {incompleteItems?.map((item) => (
