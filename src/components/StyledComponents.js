@@ -42,6 +42,7 @@ export const Icon = styled.div`
 
 export const ButtonContainer = styled.div`
   display: flex;
+  align-items: center;
   gap: 10px;
 `;
 
@@ -53,7 +54,7 @@ export const Checkbox = styled.input`
 export const Panel = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
   justify-content: center;
   align-items: center;
   text-align: center;

@@ -79,7 +79,7 @@ export default function Settings() {
       setInviteCode(code);
       setHHName(hh.name);
       setHMName(hm.name);
-      setLists(hhLists);
+      setLists(hhLists.filter((list) => !list.private || list.hm_id === hm.id));
       if (hh.HoH_id === hm.id) {
         setUserHoH(true);
       }
@@ -111,13 +111,13 @@ export default function Settings() {
     }
   };
 
-  const handleLeave = async () => {
-    await leaveHousehold();
-    history.push('household');
-  };
-
   const copyCode = () => {
     navigator.clipboard.writeText(inviteCode).then(() => setIsCopied(true));
+  };
+
+  const handleLeave = async () => {
+    await leaveHousehold();
+    history.push('/household');
   };
 
   const handleDeleteHH = async () => {
