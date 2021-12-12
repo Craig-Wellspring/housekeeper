@@ -1,41 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import listNames from '../../JSON/listNames.json';
 import listIcons from '../../JSON/listIcons.json';
-
-const Icon = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-content: center;
-  justify-content: center;
-  background-color: gray;
-  width: 120px;
-  height: 120px;
-
-  font-weight: bold;
-
-  padding: 10px;
-  border: 2px solid black;
-  margin: 10px;
-`;
+import { Icon } from '../StyledComponents';
 
 function ListIcon({ list }) {
   const history = useHistory();
 
   const handleClick = () => {
-    history.push(`/${list.type}`);
+    if (list.type === 'custom') {
+      history.push(`/${list.type}/${list.id}`);
+    } else {
+      history.push(`/${list.type}`);
+    }
   };
 
   return (
     <>
       {!list.hidden && (
-      <Icon onClick={handleClick}>
-        <i style={{ fontSize: '2em' }} className={`fas fa-${listIcons[list.type]}`} />
-        {listNames[list.type]}
-      </Icon>
+        <Icon onClick={handleClick}>
+          <div style={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
+            {list.private && (<i className="fas fa-lock" style={{ position: 'absolute', left: '24px', top: '-6px' }} />)}
+            <i style={{ fontSize: '35px' }} className={`fas fa-${listIcons[list.type]}`} />
+          </div>
+          {list.name}
+        </Icon>
       )}
     </>
   );
@@ -46,7 +35,9 @@ ListIcon.propTypes = {
     id: PropTypes.number.isRequired,
     hh_id: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     hidden: PropTypes.bool.isRequired,
+    private: PropTypes.bool.isRequired,
   }).isRequired,
 };
 

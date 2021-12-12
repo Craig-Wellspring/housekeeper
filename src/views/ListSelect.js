@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import ListIcon from '../components/listables/ListIcon';
 import { getLists } from '../api/data/lists-data';
 import AddListButton from '../components/buttons/AddListButton';
+import { Panel, PanelTitle } from '../components/StyledComponents';
+import { getUserHMID } from '../api/data/housemates-data';
 
 const ListContainer = styled.div`
   display: flex;
@@ -16,25 +18,24 @@ const ListContainer = styled.div`
 
 export default function ListSelect() {
   const [lists, setLists] = useState([]);
-  const [customLists, setCustomLists] = useState([]);
 
-  useEffect(() => {
-    getLists().then(setLists);
-    setCustomLists();
+  useEffect(async () => {
+    let isMounted = true;
+    const hhLists = await getLists();
+    const hmID = await getUserHMID();
+    if (isMounted) { setLists(hhLists.filter((list) => !list.private || list.hm_id === hmID)); }
+    return (() => { isMounted = false; });
   }, []);
 
   return (
-    <div className="panel">
-      <div className="panel-title">List Select</div>
+    <Panel>
+      <PanelTitle>List Select</PanelTitle>
       <ListContainer>
         {lists?.map((list) => (
           <ListIcon key={list.id} list={list} />
         ))}
-        {customLists?.map((cList) => (
-          <ListIcon key={cList.id} cList={cList} />
-        ))}
-        <AddListButton />
+        <AddListButton setLists={setLists} />
       </ListContainer>
-    </div>
+    </Panel>
   );
 }

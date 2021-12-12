@@ -1,13 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
 import SignInButton from '../components/buttons/SignInButton';
-
-const Panel = styled.div``;
+import { Panel, PanelTitle } from '../components/StyledComponents';
 
 export default function SignIn() {
   return (
-    <Panel className="panel">
-      <div className="panel-title">Welcome! Sign In!</div>
+    <Panel>
+      <PanelTitle>Welcome! Sign In!</PanelTitle>
       <SignInButton />
     </Panel>
   );

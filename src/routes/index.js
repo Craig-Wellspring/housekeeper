@@ -20,6 +20,7 @@ export default function Routes() {
         path={['/todo', '/grocery', '/shopping', '/maintenance', '/cleaning']}
         component={List}
       />
+      <Route exact path="/custom/:id" component={List} />
       <Route exact path="/bulletin" component={Bulletin} />
       <Route exact path="/pets" component={Pets} />
     </Switch>

@@ -20,6 +20,12 @@ const getUserHHID = async () => {
   return hm.hh_id;
 };
 
+const getUserHMID = async () => {
+  const hm = await getHousemate();
+
+  return hm.id;
+};
+
 const createHousemate = async () => {
   const user = currentUser();
   const { data } = await supabase
@@ -59,6 +65,7 @@ export {
   getHousemates,
   getHousemate,
   getUserHHID,
+  getUserHMID,
   createHousemate,
   joinHousehold,
   leaveHousehold,

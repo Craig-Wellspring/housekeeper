@@ -1,46 +1,128 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { getItems } from '../api/data/items-data';
-import { currentListType } from '../api/data/lists-data';
+import {
+  currentListID, currentListType, deleteList, getListByType, getListByID, setListName, setListPrivate,
+} from '../api/data/lists-data';
 import ListItem from '../components/listables/ListItem';
 import CreateItemForm from '../components/panels/CreateItemForm';
-import listNames from '../JSON/listNames.json';
+import {
+  ButtonContainer,
+  CategoryLabel,
+  ListContainer,
+  Panel,
+  PanelTitle,
+} from '../components/StyledComponents';
 
-const ListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
+const NameInput = styled.input`
+  text-align: center;
+  font-size: 120%;
 `;
 
 export default function List() {
+  const history = useHistory();
+
+  const [name, setName] = useState('');
+  const [showNameForm, setShowNameForm] = useState(false);
+  const [nameFormInput, setNameFormInput] = useState('');
+
+  const [isPrivate, setIsPrivate] = useState(false);
+
   const [items, setItems] = useState([]);
-  const [filteredItems, setFilteredItems] = useState([]);
+  const [completeItems, setCompleteItems] = useState([]);
+  const [incompleteItems, setIncompleteItems] = useState([]);
 
   const [showHidden, setShowHidden] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
 
-  useEffect(() => {
+  useEffect(async () => {
     let isMounted = true;
-    getItems().then((i) => {
-      if (isMounted) {
-        setItems(i);
-        setFilteredItems(items.filter((item) => !item.completed));
-      }
-    });
+    const listItems = await getItems();
+    const list = currentListID() ? await getListByID(currentListID()) : await getListByType();
+    if (isMounted) {
+      setItems(listItems);
+      setIsPrivate(list.private);
+      setName(list.name);
+      setNameFormInput(list.name);
+    }
     return () => {
       isMounted = false;
     };
   }, []);
 
   useEffect(() => {
-    setFilteredItems(items.filter((item) => item.completed === showHidden));
-  }, [showHidden, items]);
+    setIncompleteItems(items?.filter((item) => !item.completed));
+    setCompleteItems(items?.filter((item) => item.completed));
+  }, [items]);
+
+  const handlePrivatize = async () => {
+    await setListPrivate(currentListID(), !isPrivate);
+    setIsPrivate(!isPrivate);
+  };
+
+  const listNameEdit = () => {
+    if (showNameForm) {
+      if (nameFormInput !== name) {
+        setListName(currentListID(), nameFormInput).then(() => setName(nameFormInput));
+      }
+      setShowNameForm(false);
+    } else {
+      setNameFormInput(name);
+      setShowNameForm(true);
+    }
+  };
+
+  const handleDelete = async () => {
+    await deleteList(currentListID());
+    history.push('/select');
+  };
 
   return (
-    <div className="panel">
-      <div className="panel-title">{listNames[currentListType()]}</div>
+    <Panel>
+      <ButtonContainer>
+        {currentListType() === 'custom' && (
+          <button
+            type="button"
+            className={`btn btn-sm btn-${isPrivate ? 'success' : 'danger'}`}
+            onClick={handlePrivatize}
+          >
+            <i className={`fas fa-${isPrivate ? 'lock' : 'unlock'}`} />
+          </button>
+        )}
+        {showNameForm ? (
+          <NameInput
+            value={nameFormInput}
+            onChange={(e) => setNameFormInput(e.target.value)}
+          />
+        ) : (<PanelTitle>{name}</PanelTitle>)}
+        <ButtonContainer>
+          {currentListType() === 'custom' && (
+            <>
+              {showEdit && (
+              <button
+                type="button"
+                className={`btn btn-sm btn-${showNameForm ? 'success' : 'primary'}`}
+                onClick={listNameEdit}
+              >
+                <i className={`fas fa-${showNameForm ? 'check' : 'edit'}`} />
+              </button>
+              )}
+              {showDelete && (
+              <button
+                type="button"
+                className="btn btn-sm btn-danger"
+                onClick={handleDelete}
+              >
+                <i className="fas fa-trash" />
+              </button>
+              )}
+            </>
+          )}
+        </ButtonContainer>
+      </ButtonContainer>
+
       <CreateItemForm setItems={setItems} />
       <div style={{ display: 'flex', gap: '10px' }}>
         <button
@@ -72,7 +154,8 @@ export default function List() {
         </button>
       </div>
       <ListContainer>
-        {filteredItems?.map((item) => (
+        {showHidden && <CategoryLabel>Incomplete</CategoryLabel>}
+        {incompleteItems?.map((item) => (
           <ListItem
             key={item.id}
             data={item}
@@ -81,7 +164,18 @@ export default function List() {
             showDelete={showDelete}
           />
         ))}
+        {showHidden && <CategoryLabel>Complete</CategoryLabel>}
+        {showHidden
+          && completeItems?.map((item) => (
+            <ListItem
+              key={item.id}
+              data={item}
+              setItems={setItems}
+              showEdit={showEdit}
+              showDelete={showDelete}
+            />
+          ))}
       </ListContainer>
-    </div>
+    </Panel>
   );
 }
