@@ -1,10 +1,5 @@
 import { currentUser, supabase } from '../auth';
 
-const getHousemates = async () => {
-  const { data } = await supabase.from('housemates').select('uid');
-  return console.warn(data);
-};
-
 const getHousemate = async () => {
   const { data } = await supabase
     .from('housemates')
@@ -26,13 +21,21 @@ const getHousemateByID = async (HMID) => {
 const getUserHHID = async () => {
   const hm = await getHousemate();
 
-  return hm.hh_id;
+  return hm?.hh_id;
 };
 
 const getUserHMID = async () => {
   const hm = await getHousemate();
 
   return hm.id;
+};
+
+const getHousematesByHHID = async (HHID) => {
+  const { data } = await supabase
+    .from('housemates')
+    .select('*')
+    .eq('hh_id', HHID);
+  return data;
 };
 
 const createHousemate = async () => {
@@ -42,6 +45,10 @@ const createHousemate = async () => {
     .insert([{ name: user.user_metadata.name, uid: user.id }]);
 
   return data;
+};
+
+const promoteHousemate = async (HMID) => {
+  console.warn(HMID);
 };
 
 const joinHousehold = async (hhID) => {
@@ -71,12 +78,13 @@ const updateHousemateName = async (string) => {
 };
 
 export {
-  getHousemates,
   getHousemate,
   getHousemateByID,
   getUserHHID,
   getUserHMID,
+  getHousematesByHHID,
   createHousemate,
+  promoteHousemate,
   joinHousehold,
   leaveHousehold,
   updateHousemateName,

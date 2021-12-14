@@ -10,12 +10,14 @@ import {
 } from '../api/data/households-data';
 import {
   getHousemate,
+  getHousematesByHHID,
   leaveHousehold,
   updateHousemateName,
 } from '../api/data/housemates-data';
 import { getLists } from '../api/data/lists-data';
 import ListSetting from '../components/listables/ListSetting';
 import { Panel, PanelTitle, Section } from '../components/StyledComponents';
+import Housemate from '../components/listables/Housemate';
 
 const NamePanel = styled.div`
   display: flex;
@@ -76,11 +78,13 @@ export default function Settings({ setHHID }) {
     const code = await getJoinCode();
     const hh = await getHousehold();
     const hm = await getHousemate();
+    const hmList = await getHousematesByHHID(hh.id);
     const hhLists = await getLists();
     if (isMounted) {
       setInviteCode(code);
       setHHName(hh.name);
       setHMName(hm.name);
+      setHMs(hmList.filter((mate) => mate.id !== hm.id));
       setLists(hhLists.filter((list) => !list.private || list.hm_id === hm.id));
       if (hh.HoH_id === hm.id) {
         setUserHoH(true);
@@ -177,7 +181,7 @@ export default function Settings({ setHHID }) {
 
       <Section>
         <Label>Show Lists</Label>
-        {lists.map((list) => <ListSetting key={list.id} data={list} />)}
+        {lists?.map((list) => <ListSetting key={list.id} data={list} />)}
       </Section>
 
       <Section>
@@ -215,9 +219,10 @@ export default function Settings({ setHHID }) {
         )}
       </Section>
 
-      {userHoH && (
+      {userHoH && HMs.length > 0 && (
         <Section>
-
+          <Label>Housemates</Label>
+          {HMs?.map((hm) => <Housemate hm={hm} key={hm.id} />)}
         </Section>
       )}
 
