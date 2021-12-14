@@ -52,11 +52,11 @@ export default function Pin({
     return () => { isMounted = false; };
   }, []);
 
-  const handleCheck = () => {
-    setItemComplete(data.id, !checked).then((checkedBool) => {
-      setChecked(checkedBool);
-      getItems().then(setItems);
-    });
+  const handleCheck = async () => {
+    const checkedBool = await setItemComplete(data.id, !checked);
+    setChecked(checkedBool);
+    const items = await getItems();
+    setItems(items);
   };
 
   const handleChange = (e) => {

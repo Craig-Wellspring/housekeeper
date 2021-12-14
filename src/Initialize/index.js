@@ -29,7 +29,7 @@ function Initialize() {
       {session ? (
         <>
           <Navigation HHID={HHID} />
-          <Routes setHHID={setHHID} />
+          <Routes HHID={HHID} setHHID={setHHID} />
         </>
       ) : (<SignIn />)}
     </div>

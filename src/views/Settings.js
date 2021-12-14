@@ -64,6 +64,7 @@ export default function Settings({ setHHID }) {
 
   const [lists, setLists] = useState([]);
 
+  const [HMs, setHMs] = useState([]);
   const [userHoH, setUserHoH] = useState(false);
 
   const [showCode, setShowCode] = useState(false);
@@ -118,14 +119,14 @@ export default function Settings({ setHHID }) {
 
   const handleLeave = async () => {
     await leaveHousehold();
-    history.push('/household');
     setHHID(null);
+    history.push('/household');
   };
 
   const handleDeleteHH = async () => {
     await deleteHousehold();
-    history.push('/household');
     setHHID(null);
+    history.push('/household');
   };
 
   return (
@@ -213,6 +214,12 @@ export default function Settings({ setHHID }) {
           </button>
         )}
       </Section>
+
+      {userHoH && (
+        <Section>
+
+        </Section>
+      )}
 
       <button type="button" className="btn btn-danger" onClick={handleLeave}>
         Leave Household

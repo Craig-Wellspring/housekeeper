@@ -70,11 +70,15 @@ export default function HouseholdSelect({ setHHID }) {
   const [joinFormInput, setJoinFormInput] = useState('');
 
   useEffect(async () => {
+    let isMounted = true;
     const id = await getUserHMID();
-    setCreateFormInput((prevState) => ({
-      ...prevState,
-      HoH_id: id,
-    }));
+    if (isMounted) {
+      setCreateFormInput((prevState) => ({
+        ...prevState,
+        HoH_id: id,
+      }));
+    }
+    return () => { isMounted = false; };
   }, []);
 
   const handleCreateSubmit = async (e) => {

@@ -28,9 +28,7 @@ export default function Bulletin() {
   useEffect(async () => {
     let isMounted = true;
     const listItems = await getItems();
-    if (isMounted) {
-      setItems(listItems);
-    }
+    if (isMounted) { setItems(listItems); }
     return () => {
       isMounted = false;
     };

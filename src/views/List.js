@@ -43,13 +43,11 @@ export default function List() {
     const list = currentListID() ? await getListByID(currentListID()) : await getListByType();
     if (isMounted) {
       setItems(listItems);
-      setIsPrivate(list.private);
-      setName(list.name);
-      setNameFormInput(list.name);
+      setIsPrivate(list?.private);
+      setName(list?.name);
+      setNameFormInput(list?.name);
     }
-    return () => {
-      isMounted = false;
-    };
+    return () => { isMounted = false; };
   }, []);
 
   useEffect(() => {
