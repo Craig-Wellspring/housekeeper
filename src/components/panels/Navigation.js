@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import SignOutButton from '../buttons/SignOutButton';
 import SettingsButton from '../buttons/SettingsButton';
 import ListViewButton from '../buttons/ListViewButton';
-import { getHousemateByID, getUserHHID } from '../../api/data/housemates-data';
 
 const NavBar = styled.div`
   display: flex;
@@ -14,23 +14,31 @@ const NavBar = styled.div`
   padding: 10px;
 `;
 
-export default function Navigation() {
-  const [hhID, sethhID] = useState('');
-
-  useEffect(() => {
-    getUserHHID().then(sethhID);
-  }, []);
-
-  const test = async () => {
-    getHousemateByID(4).then(console.warn);
-  };
+export default function Navigation({ HHID }) {
+  // const test = async () => {
+  //   console.warn(HHID);
+  // };
 
   return (
     <NavBar>
-      <SettingsButton />
-      <button type="button" className="btn btn-warning" onClick={test}>X</button>
-      {hhID && <ListViewButton />}
+      {/* <button type="button" className="btn btn-warning" onClick={test}>X</button> */}
+      {HHID ? (
+        <>
+          <SettingsButton />
+          <ListViewButton />
+        </>
+      ) : (
+        <div />
+      )}
       <SignOutButton />
     </NavBar>
   );
 }
+
+Navigation.propTypes = {
+  HHID: PropTypes.number,
+};
+
+Navigation.defaultProps = {
+  HHID: null,
+};

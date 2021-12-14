@@ -18,7 +18,7 @@ const createHousehold = async (name, id) => {
   await joinHousehold(data[0].id);
   generateLists();
 
-  return data[0];
+  return data[0].hh_id;
 };
 
 const updateHouseholdName = async (string) => {

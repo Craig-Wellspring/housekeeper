@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import {
   deleteHousehold,
   getHousehold,
@@ -50,7 +51,7 @@ const Label = styled.div`
   text-decoration: underline;
 `;
 
-export default function Settings() {
+export default function Settings({ setHHID }) {
   const history = useHistory();
 
   const [HHName, setHHName] = useState('');
@@ -118,11 +119,13 @@ export default function Settings() {
   const handleLeave = async () => {
     await leaveHousehold();
     history.push('/household');
+    setHHID(null);
   };
 
   const handleDeleteHH = async () => {
     await deleteHousehold();
     history.push('/household');
+    setHHID(null);
   };
 
   return (
@@ -226,3 +229,7 @@ export default function Settings() {
     </Panel>
   );
 }
+
+Settings.propTypes = {
+  setHHID: PropTypes.func.isRequired,
+};
