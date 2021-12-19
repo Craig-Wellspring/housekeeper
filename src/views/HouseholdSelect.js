@@ -3,8 +3,9 @@ import Modal from 'react-modal';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { createHousehold, validateJoinCode } from '../api/data/households-data';
-import { getUserHMID, joinHousehold } from '../api/data/housemates-data';
+import {
+  createHousehold, validateJoinCode, getUserHMID, joinHousehold, increaseHMCount,
+} from '../api/data/households-data';
 import { Panel, PanelTitle } from '../components/StyledComponents';
 
 const Form = styled.form``;
@@ -42,7 +43,9 @@ const modalStyle = {
     gap: '20px',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '300px',
+    height: '350px',
+    backgroundColor: '#1e2024',
+    color: 'white',
   },
 };
 
@@ -102,10 +105,11 @@ export default function HouseholdSelect({ setHHID }) {
 
   const handleJoinSubmit = async (e) => {
     e.preventDefault();
-    const hhID = await validateJoinCode(joinFormInput);
-    if (hhID) {
-      await joinHousehold(hhID);
-      setHHID(hhID);
+    const HHID = await validateJoinCode(joinFormInput);
+    if (HHID) {
+      await joinHousehold(HHID);
+      await increaseHMCount(HHID);
+      setHHID(HHID);
       history.push('/select');
     } else {
       setError(true);
@@ -123,14 +127,14 @@ export default function HouseholdSelect({ setHHID }) {
         <CreateButton
           type="button"
           onClick={() => setShowCreate(true)}
-          className="btn btn-success"
+          className="button text-btn primary-btn"
         >
           Create
         </CreateButton>
         <JoinButton
           type="button"
           onClick={openJoinModal}
-          className="btn btn-primary"
+          className="button text-btn primary-btn"
         >
           Join
         </JoinButton>
@@ -156,16 +160,16 @@ export default function HouseholdSelect({ setHHID }) {
           <ButtonTray>
             <SubmitButton
               type="submit"
-              className="btn btn-success"
+              className="button sm-round-btn primary-btn"
             >
-              Submit
+              <i className="fas fa-check" />
             </SubmitButton>
             <SubmitButton
               type="button"
-              className="btn btn-danger"
+              className="button sm-round-btn primary-btn"
               onClick={() => setShowCreate(false)}
             >
-              X
+              <i className="fas fa-times" />
             </SubmitButton>
           </ButtonTray>
         </Form>
@@ -191,16 +195,16 @@ export default function HouseholdSelect({ setHHID }) {
           <ButtonTray>
             <SubmitButton
               type="submit"
-              className="btn btn-success"
+              className="button sm-round-btn primary-btn"
             >
-              Submit
+              <i className="fas fa-check" />
             </SubmitButton>
             <SubmitButton
               type="button"
-              className="btn btn-danger"
+              className="button sm-round-btn primary-btn"
               onClick={() => setShowJoin(false)}
             >
-              X
+              <i className="fas fa-times" />
             </SubmitButton>
           </ButtonTray>
         </Form>

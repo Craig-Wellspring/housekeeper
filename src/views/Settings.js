@@ -7,17 +7,20 @@ import {
   getHousehold,
   getJoinCode,
   updateHouseholdName,
-} from '../api/data/households-data';
-import {
   getHousemate,
   getHousematesByHHID,
   leaveHousehold,
   updateHousemateName,
-} from '../api/data/housemates-data';
+  regenerateJoinCode,
+} from '../api/data/households-data';
 import { getLists } from '../api/data/lists-data';
 import ListSetting from '../components/listables/ListSetting';
-import { Panel, PanelTitle, Section } from '../components/StyledComponents';
+import {
+  ButtonContainer,
+  CategoryLabel, Panel, PanelTitle, Section,
+} from '../components/StyledComponents';
 import Housemate from '../components/listables/Housemate';
+import { supabase } from '../api/auth';
 
 const NamePanel = styled.div`
   display: flex;
@@ -34,23 +37,10 @@ const Name = styled.div`
   font-size: 120%;
 `;
 
-const NameInput = styled.input`
-  text-align: center;
-`;
-
 const LabelPanel = styled.div`
   display: flex;
   justify-content: center;
   gap: 10px;
-`;
-
-const Label = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: 120%;
-  text-decoration: underline;
 `;
 
 export default function Settings({ setHHID }) {
@@ -73,8 +63,55 @@ export default function Settings({ setHHID }) {
   const [inviteCode, setInviteCode] = useState('');
   const [isCopied, setIsCopied] = useState(false);
 
+  const updateLists = async () => {
+    const hhLists = await getLists();
+    setLists(hhLists);
+  };
+
+  const subscribeToLists = (HHID) => {
+    const subscription = supabase
+      .from(`lists:hh_id=eq.${HHID}`)
+      .on('*', updateLists)
+      .subscribe();
+    return subscription;
+  };
+
+  const updateHousehold = async (payload) => {
+    if (payload.new.hm_count !== payload.old.hm_count) {
+      const hm = await getHousemate();
+      if (hm.hh_id) {
+        const hh = await getHousehold();
+        const hmList = await getHousematesByHHID(hh.id);
+        setHMs(hmList.filter((mate) => mate.id !== hm.id));
+      }
+    }
+    if (payload.new.name !== payload.old.name) {
+      const hh = await getHousehold();
+      setHHName(hh.name);
+    }
+    if (payload.new.HoH_id !== payload.old.HoH_id) {
+      const hm = await getHousemate();
+      const hh = await getHousehold();
+      setUserHoH(hh.HoH_id === hm.id);
+    }
+    if (payload.new.invite_code !== payload.old.invite_code) {
+      const hh = await getHousehold();
+      setInviteCode(hh.invite_code);
+    }
+  };
+
+  const subscribeToHousehold = (HHID) => {
+    const subscription = supabase
+      .from(`households:id=eq.${HHID}`)
+      .on('UPDATE', updateHousehold)
+      .subscribe();
+    return subscription;
+  };
+
   useEffect(async () => {
     let isMounted = true;
+    let listsSub;
+    let hhSub;
     const code = await getJoinCode();
     const hh = await getHousehold();
     const hm = await getHousemate();
@@ -85,12 +122,18 @@ export default function Settings({ setHHID }) {
       setHHName(hh.name);
       setHMName(hm.name);
       setHMs(hmList.filter((mate) => mate.id !== hm.id));
-      setLists(hhLists.filter((list) => !list.private || list.hm_id === hm.id));
+      setLists(hhLists);
       if (hh.HoH_id === hm.id) {
         setUserHoH(true);
       }
+      listsSub = subscribeToLists(hh.id);
+      hhSub = subscribeToHousehold(hh.id);
     }
-    return (() => { isMounted = false; });
+    return () => {
+      isMounted = false;
+      if (listsSub) supabase.removeSubscription(listsSub);
+      if (hhSub) supabase.removeSubscription(hhSub);
+    };
   }, []);
 
   const hhNameEdit = () => {
@@ -121,6 +164,11 @@ export default function Settings({ setHHID }) {
     navigator.clipboard.writeText(inviteCode).then(() => setIsCopied(true));
   };
 
+  const regenerateCode = async () => {
+    const newCode = await regenerateJoinCode();
+    setInviteCode(newCode);
+  };
+
   const handleLeave = async () => {
     await leaveHousehold();
     setHHID(null);
@@ -139,17 +187,18 @@ export default function Settings({ setHHID }) {
 
       <NamePanel id="hm-name">
         <LabelPanel>
+          <CategoryLabel>User Name:</CategoryLabel>
           <button
             type="button"
-            className={`btn btn-sm btn-${showHMForm ? 'success' : 'primary'}`}
+            className={`button sm-round-btn ${showHMForm ? 'secondary' : 'primary'}-btn`}
             onClick={hmNameEdit}
           >
             <i className={`fas fa-${showHMForm ? 'check' : 'edit'}`} />
           </button>
-          <Label>User Name:</Label>
         </LabelPanel>
         {showHMForm ? (
-          <NameInput
+          <input
+            type="text"
             value={HMFormInput}
             onChange={(e) => setHMFormInput(e.target.value)}
           />
@@ -160,17 +209,20 @@ export default function Settings({ setHHID }) {
 
       <NamePanel>
         <LabelPanel id="hh-name">
-          <button
-            type="button"
-            className={`btn btn-sm btn-${showHHForm ? 'success' : 'primary'}`}
-            onClick={hhNameEdit}
-          >
-            <i className={`fas fa-${showHHForm ? 'check' : 'edit'}`} />
-          </button>
-          <Label>Household Name:</Label>
+          <CategoryLabel>Household Name:</CategoryLabel>
+          {userHoH && (
+            <button
+              type="button"
+              className={`button sm-round-btn ${showHHForm ? 'secondary' : 'primary'}-btn`}
+              onClick={hhNameEdit}
+            >
+              <i className={`fas fa-${showHHForm ? 'check' : 'edit'}`} />
+            </button>
+          )}
         </LabelPanel>
         {showHHForm ? (
-          <NameInput
+          <input
+            type="text"
             value={HHFormInput}
             onChange={(e) => setHHFormInput(e.target.value)}
           />
@@ -180,17 +232,28 @@ export default function Settings({ setHHID }) {
       </NamePanel>
 
       <Section>
-        <Label>Show Lists</Label>
-        {lists?.map((list) => <ListSetting key={list.id} data={list} />)}
+        <CategoryLabel>Show Lists</CategoryLabel>
+        {lists?.map((list) => (
+          <ListSetting key={list.id} data={list} />
+        ))}
       </Section>
 
       <Section>
-        <Label>Invite Code</Label>
+        <CategoryLabel>Invite Code</CategoryLabel>
         {showCode ? (
-          <div style={{ display: 'flex', gap: '5px' }}>
+          <ButtonContainer>
+            {userHoH && (
             <button
               type="button"
-              className="btn btn-success"
+              className="button sm-round-btn primary-btn"
+              onClick={regenerateCode}
+            >
+              <i className="fas fa-recycle" />
+            </button>
+            )}
+            <button
+              type="button"
+              className="button text-btn primary-btn"
               onClick={() => {
                 setShowCode(false);
                 setIsCopied(false);
@@ -200,18 +263,20 @@ export default function Settings({ setHHID }) {
             </button>
             <button
               type="button"
-              className={`btn btn-${isCopied ? 'success' : 'secondary'}`}
+              className={`button sm-round-btn ${isCopied ? 'secondary' : 'primary'}-btn`}
               onClick={copyCode}
             >
               <i
-                className={`fas fa-${isCopied ? 'clipboard-check' : 'clipboard'}`}
+                className={`fas fa-${
+                  isCopied ? 'clipboard-check' : 'clipboard'
+                }`}
               />
             </button>
-          </div>
+          </ButtonContainer>
         ) : (
           <button
             type="button"
-            className="btn btn-primary"
+            className="button text-btn secondary-btn"
             onClick={() => setShowCode(true)}
           >
             Show Code
@@ -219,20 +284,22 @@ export default function Settings({ setHHID }) {
         )}
       </Section>
 
-      {userHoH && HMs.length > 0 && (
+      {HMs.length > 0 && (
         <Section>
-          <Label>Housemates</Label>
-          {HMs?.map((hm) => <Housemate hm={hm} key={hm.id} />)}
+          <CategoryLabel>Housemates</CategoryLabel>
+          {HMs?.map((hm) => (
+            <Housemate key={hm.id} hm={hm} setHMs={setHMs} userHoH={userHoH} />
+          ))}
         </Section>
       )}
 
-      <button type="button" className="btn btn-danger" onClick={handleLeave}>
+      <button type="button" className="button text-btn primary-btn" onClick={handleLeave}>
         Leave Household
       </button>
       {userHoH && (
         <button
           type="button"
-          className="btn btn-danger"
+          className="button text-btn primary-btn"
           onClick={handleDeleteHH}
         >
           Delete Household

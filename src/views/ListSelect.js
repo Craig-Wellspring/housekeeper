@@ -4,7 +4,8 @@ import ListIcon from '../components/listables/ListIcon';
 import { getLists } from '../api/data/lists-data';
 import AddListButton from '../components/buttons/AddListButton';
 import { Panel, PanelTitle } from '../components/StyledComponents';
-import { getUserHMID } from '../api/data/housemates-data';
+import { getHousemate } from '../api/data/households-data';
+import { supabase } from '../api/auth';
 
 const ListContainer = styled.div`
   display: flex;
@@ -19,12 +20,33 @@ const ListContainer = styled.div`
 export default function ListSelect() {
   const [lists, setLists] = useState([]);
 
+  const updateLists = async () => {
+    const hhLists = await getLists();
+    setLists(hhLists);
+  };
+
+  const subscribeToLists = (HHID) => {
+    const subscription = supabase
+      .from(`lists:hh_id=eq.${HHID}`)
+      .on('*', updateLists)
+      .subscribe();
+    console.warn(subscription);
+    return subscription;
+  };
+
   useEffect(async () => {
     let isMounted = true;
+    let subscription;
     const hhLists = await getLists();
-    const hmID = await getUserHMID();
-    if (isMounted) { setLists(hhLists.filter((list) => !list.private || list.hm_id === hmID)); }
-    return (() => { isMounted = false; });
+    const hm = await getHousemate();
+    if (isMounted) {
+      subscription = subscribeToLists(hm.hh_id);
+      setLists(hhLists);
+    }
+    return (() => {
+      isMounted = false;
+      supabase.removeSubscription(subscription);
+    });
   }, []);
 
   return (

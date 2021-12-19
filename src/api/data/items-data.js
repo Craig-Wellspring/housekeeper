@@ -1,5 +1,5 @@
 import { supabase } from '../auth';
-import { getUserHMID } from './housemates-data';
+import { getUserHMID } from './households-data';
 import { getListID } from './lists-data';
 
 const getItems = async () => {

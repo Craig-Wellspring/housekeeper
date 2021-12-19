@@ -28,9 +28,10 @@ export default function CreateItemForm({ setItems }) {
         name="name"
         onChange={handleChange}
         value={formInput}
+        placeholder="Add Item"
         required
       />
-      <button type="submit" className="btn btn-success">
+      <button type="submit" className="button sm-round-btn primary-btn">
         <i className="fas fa-plus" />
       </button>
     </Form>

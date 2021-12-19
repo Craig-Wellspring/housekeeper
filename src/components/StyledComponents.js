@@ -8,9 +8,13 @@ export const ListContainer = styled.div`
 `;
 
 export const CategoryLabel = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   font-size: 120%;
   text-decoration: underline;
+  text-shadow: 2px 2px black;
 `;
 
 export const Section = styled.div`
@@ -19,7 +23,6 @@ export const Section = styled.div`
   gap: 10px;
 
   padding: 10px;
-  border: 1px solid black;
   margin: 10px;
 `;
 
@@ -29,27 +32,32 @@ export const Icon = styled.div`
   gap: 10px;
   align-content: center;
   justify-content: center;
-  background-color: gray;
+  background-image: linear-gradient(to right top, #993c73, #9a4e99, #8e65bf, #6e7de2, #0096ff);
   width: 120px;
   height: 120px;
 
   font-weight: bold;
+  color: #1e2024;
 
   padding: 10px;
-  border: 2px solid black;
+  border-radius: 6px;
+  box-shadow: 4px 4px 4px black;
   margin: 10px;
+  
+  &:active {
+    background-image: linear-gradient(to left bottom, #993c73, #9a4e99, #8e65bf, #6e7de2, #0096ff);
+  }
 `;
 
 export const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
+  text-align: center;
 `;
 
-export const Checkbox = styled.input`
-  height: 25px;
-  width: 25px;
-`;
+export const Checkbox = styled.input``;
 
 export const Panel = styled.div`
   display: flex;
@@ -59,11 +67,15 @@ export const Panel = styled.div`
   align-items: center;
   text-align: center;
   padding: 20px;
-
-  background-color: white;
 `;
 
 export const PanelTitle = styled.div`
-  font-size: 24pt;
+  font-size: 30pt;
+  font-weight: 320;
   text-align: center;
+  background: linear-gradient(to left bottom, #993c73, #9a4e99, #8e65bf, #6e7de2, #0096ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 3px transparent;
+  text-shadow: 3px 3px 3px black;
 `;

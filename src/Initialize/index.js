@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../api/auth';
-import { getUserHHID } from '../api/data/housemates-data';
+import { getUserHHID } from '../api/data/households-data';
 import Navigation from '../components/panels/Navigation';
 import Routes from '../routes';
 import SignIn from '../views/SignIn';
@@ -23,6 +23,13 @@ function Initialize() {
       setHHID(id);
     }
   }, [session]);
+
+  useEffect(async () => {
+    console.warn(HHID);
+    const subs = supabase.getSubscriptions();
+    const aSubs = subs.filter((sub) => sub.isJoined());
+    console.warn(aSubs);
+  }, [HHID]);
 
   return (
     <div className="App">

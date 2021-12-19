@@ -11,7 +11,7 @@ export default function SignOutButton() {
   };
 
   return (
-    <button type="button" className="btn btn-danger" onClick={signOut}>
+    <button type="button" className="button primary-btn round-btn" onClick={signOut}>
       <i className="fas fa-sign-out-alt" />
     </button>
   );

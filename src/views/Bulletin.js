@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { getItems } from '../api/data/items-data';
 import Pin from '../components/listables/Pin';
+import { supabase } from '../api/auth';
 import CreatePinForm from '../components/panels/CreatePinForm';
 import {
   ButtonContainer, CategoryLabel, ListContainer, Panel, PanelTitle,
 } from '../components/StyledComponents';
+import { getListID } from '../api/data/lists-data';
 
 const Board = styled.div`
   display: flex;
@@ -25,12 +27,31 @@ export default function Bulletin() {
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
 
+  const updateItems = async () => {
+    const listItems = await getItems();
+    setItems(listItems);
+  };
+
+  const subscribeToItems = (listID) => {
+    const subscription = supabase
+      .from(`items:list_id=eq.${listID}`)
+      .on('*', updateItems)
+      .subscribe();
+    return subscription;
+  };
+
   useEffect(async () => {
     let isMounted = true;
+    let subscription;
     const listItems = await getItems();
-    if (isMounted) { setItems(listItems); }
+    const listID = await getListID();
+    if (isMounted) {
+      setItems(listItems);
+      subscription = subscribeToItems(listID);
+    }
     return () => {
       isMounted = false;
+      if (subscription) supabase.removeSubscription(subscription);
     };
   }, []);
 
@@ -46,7 +67,7 @@ export default function Bulletin() {
       <ButtonContainer>
         <button
           type="button"
-          className={`btn btn-${showHidden ? 'success' : 'secondary'}`}
+          className={`button sm-round-btn ${showHidden ? 'secondary' : 'primary'}-btn`}
           onClick={() => {
             setShowHidden(!showHidden);
           }}
@@ -55,7 +76,7 @@ export default function Bulletin() {
         </button>
         <button
           type="button"
-          className={`btn btn-${showEdit ? 'primary' : 'secondary'}`}
+          className={`button sm-round-btn ${showEdit ? 'secondary' : 'primary'}-btn`}
           onClick={() => {
             setShowEdit(!showEdit);
           }}
@@ -64,7 +85,7 @@ export default function Bulletin() {
         </button>
         <button
           type="button"
-          className={`btn btn-${showDelete ? 'danger' : 'secondary'}`}
+          className={`button sm-round-btn ${showDelete ? 'secondary' : 'primary'}-btn`}
           onClick={() => {
             setShowDelete(!showDelete);
           }}

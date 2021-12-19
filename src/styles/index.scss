@@ -1,7 +1,7 @@
 @import '~@fortawesome/fontawesome-free/css/all.min.css';
 
 :root {
-  --bgColor: black;
+  --bgColor: #1e2024;
   --fontColor: white;
 }
 
@@ -10,11 +10,111 @@ body {
 }
 
 .App {
+  color: var(--fontColor);
   display: flex;
   flex-direction: column;
   gap: 10px;
-  justify-content: center;
+  justify-content: top;
   align-items: center;
   text-align: center;
   padding: 10px;
+  width: 100%;
+}
+
+.button {
+  color: white;
+  border-radius: 50em;
+  box-shadow: 3px 3px 3px black;
+}
+
+.primary-btn {
+  background: 
+    linear-gradient(var(--bgColor), var(--bgColor)) padding-box,
+    linear-gradient(to right top, #993c73, #9a4e99, #8e65bf, #6e7de2, #0096ff) border-box;
+  border: 3px solid transparent;
+
+  &:active {
+    background:
+      linear-gradient(to left bottom, #993c73, #9a4e99, #8e65bf, #6e7de2, #0096ff) border-box;
+  }
+}
+
+.secondary-btn {
+  background: 
+    linear-gradient(to right top, #993c73, #9a4e99, #8e65bf, #6e7de2, #0096ff) border-box;
+  border: 3px solid transparent;
+
+  &:active {
+    background:
+      linear-gradient(to left bottom, #993c73, #9a4e99, #8e65bf, #6e7de2, #0096ff) border-box;
+    border: 3px solid transparent;
+  }
+}
+
+.sm-btn {
+  font-size: 75%;
+  padding: 5px 9px;
+}
+
+.round-btn {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+.sm-round-btn {
+  font-size: 75%;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+
+.text-btn {
+  padding: 6px 12px;
+  font-weight: bold;
+}
+
+input[type=text] {
+  color: white;
+  text-align: center;
+  background: 
+    linear-gradient(var(--bgColor), var(--bgColor)) padding-box,
+    linear-gradient(to right top, #993c73, #9a4e99, #8e65bf, #6e7de2, #0096ff) border-box;
+  border: 3px solid transparent;
+  border-radius: 6px;
+  box-shadow: 3px 3px 3px black;
+}
+
+textarea {
+  color: white;
+  text-align: center;
+  background: 
+    linear-gradient(var(--bgColor), var(--bgColor)) padding-box,
+    linear-gradient(to right top, #993c73, #9a4e99, #8e65bf, #6e7de2, #0096ff) border-box;
+  border: 3px solid transparent;
+  border-radius: 6px;
+  box-shadow: 3px 3px 3px black;
+}
+
+textarea, input[type=text], .button {
+  &:focus {
+    outline: 1px dashed #8e65bf;
+  }
+}
+
+.border-square {
+  background: 
+    linear-gradient(var(--bgColor), var(--bgColor)) padding-box,
+    linear-gradient(to right top, #993c73, #9a4e99, #8e65bf, #6e7de2, #0096ff) border-box;
+  border: 3px solid transparent;
+  border-radius: 6px;
+  box-shadow: 3px 3px 3px black;
+}
+
+.border-square-fill {
+  background: 
+    linear-gradient(to right top, #993c73, #9a4e99, #8e65bf, #6e7de2, #0096ff) border-box;
+  border: 3px solid transparent;
+  border-radius: 6px;
+  box-shadow: 3px 3px 3px black;
 }

@@ -18,7 +18,6 @@ const Item = styled.div`
   text-align: center;
 
   padding: 10px;
-  border: 1px solid black;
 `;
 
 const EditInput = styled.input`
@@ -30,13 +29,13 @@ const EditInput = styled.input`
 function ListItem({
   data, setItems, showEdit, showDelete,
 }) {
-  const [checked, setChecked] = useState(data.completed);
+  const [isChecked, setIsChecked] = useState(data.completed);
   const [showEditForm, setShowEditForm] = useState(false);
   const [editInput, setEditInput] = useState('');
 
   const handleCheck = () => {
-    setItemComplete(data.id, !checked).then((checkedBool) => {
-      setChecked(checkedBool);
+    setItemComplete(data.id, !isChecked).then((checkedBool) => {
+      setIsChecked(checkedBool);
       getItems().then(setItems);
     });
   };
@@ -59,8 +58,22 @@ function ListItem({
   };
 
   return (
-    <Item>
-      <Checkbox type="checkbox" onChange={handleCheck} checked={checked} />
+    <Item className="border-square">
+      <Checkbox
+        className="btn-check"
+        id={`btn-check ${data.id}`}
+        autocomplete="off"
+        type="checkbox"
+        onChange={handleCheck}
+        checked={isChecked}
+      />
+      <label
+        className={`border-square${isChecked ? '-fill' : ''}`}
+        style={{ width: '30px', height: '30px' }}
+        htmlFor={`btn-check ${data.id}`}
+      >
+        <i className={`fas fa-${isChecked ? 'check' : 'times'}`} />
+      </label>
       {showEditForm ? (
         <EditInput type="text" value={editInput} onChange={handleChange} />
       ) : (
@@ -70,16 +83,18 @@ function ListItem({
         {showEdit && (
           <button
             type="button"
-            className="btn btn-sm btn-primary"
+            className={`button sm-round-btn ${
+              showEditForm ? 'secondary' : 'primary'
+            }-btn`}
             onClick={handleEdit}
           >
-            <i className="fas fa-edit" />
+            <i className={`fas fa-${showEditForm ? 'check' : 'pen'}`} />
           </button>
         )}
         {showDelete && (
           <button
             type="button"
-            className="btn btn-sm btn-danger"
+            className="button sm-round-btn primary-btn"
             onClick={handleDelete}
           >
             <i className="fas fa-trash" />

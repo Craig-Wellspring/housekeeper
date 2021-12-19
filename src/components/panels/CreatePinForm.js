@@ -6,13 +6,13 @@ import { createItem } from '../../api/data/items-data';
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
 `;
 
 const TextInput = styled.textarea`
   width: 250px;
-  text-align: center;
-  border: 1px solid black;
 `;
 
 export default function CreatePinForm({ setItems }) {
@@ -38,7 +38,7 @@ export default function CreatePinForm({ setItems }) {
         placeholder="Create a New Pin"
         required
       />
-      <button type="submit" className="btn btn-success">
+      <button type="submit" className="button round-btn primary-btn">
         <i className="fas fa-plus" />
       </button>
     </Form>

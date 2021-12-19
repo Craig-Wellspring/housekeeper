@@ -1,38 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { useHistory } from 'react-router-dom';
 import { ButtonContainer } from '../StyledComponents';
-import { promoteHousemate } from '../../api/data/housemates-data';
+import {
+  promoteHousemate,
+  removeHousemate,
+} from '../../api/data/households-data';
 
-export default function Housemate({ hm }) {
-  // const history = useHistory();
-
-  const promoteHM = () => {
-    promoteHousemate(hm.id);
-    // history.go(0);
+export default function Housemate({ hm, userHoH }) {
+  const promoteHM = async () => {
+    await promoteHousemate(hm.id);
   };
 
-  const removeHM = () => {
-    console.warn('remove', hm.id);
+  const removeHM = async () => {
+    await removeHousemate(hm.id);
   };
 
   return (
     <ButtonContainer>
       {hm.name}
-      <button
-        type="button"
-        className="btn btn-sm btn-primary"
-        onClick={promoteHM}
-      >
-        <i className="fas fa-crown" />
-      </button>
-      <button
-        type="button"
-        className="btn btn-sm btn-danger"
-        onClick={removeHM}
-      >
-        <i className="fas fa-ban" />
-      </button>
+      {userHoH && (
+        <>
+          <button
+            type="button"
+            style={{ fontSize: '60%' }}
+            className="button primary-btn sm-round-btn"
+            onClick={promoteHM}
+          >
+            <i className="fas fa-crown" />
+          </button>
+          <button
+            type="button"
+            className="button primary-btn sm-round-btn"
+            onClick={removeHM}
+          >
+            <i className="fas fa-ban" />
+          </button>
+        </>
+      )}
     </ButtonContainer>
   );
 }
@@ -42,4 +46,5 @@ Housemate.propTypes = {
     id: PropTypes.number,
     name: PropTypes.string,
   }).isRequired,
+  userHoH: PropTypes.bool.isRequired,
 };
