@@ -39,7 +39,7 @@ export default function ListSetting({ data }) {
         style={{ width: '30px', height: '30px' }}
         htmlFor={`btn-check ${data.id}`}
       >
-        <i className={`fas fa-${isChecked ? 'check' : 'times'}`} />
+        <i className={`fas fa-${isChecked ? 'check' : ''}`} />
       </label>
       <div>{data.name}</div>
       {data.private && <i className="fas fa-lock" />}

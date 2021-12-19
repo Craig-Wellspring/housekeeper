@@ -20,7 +20,7 @@ function ListIcon({ list }) {
       {!list.hidden && (
         <Icon onClick={handleClick}>
           <div style={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
-            {list.private && (<i className="fas fa-lock" style={{ position: 'absolute', left: '24px', top: '-6px' }} />)}
+            {list.private && (<i className="fas fa-lock" style={{ position: 'absolute', left: '27px', top: '-6px' }} />)}
             <i style={{ fontSize: '35px' }} className={`fas fa-${listIcons[list.type]}`} />
           </div>
           {list.name}
