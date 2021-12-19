@@ -16,26 +16,26 @@ export default function Housemate({ hm, userHoH }) {
   };
 
   return (
-    <ButtonContainer>
+    <ButtonContainer className="border-square" style={{ padding: '10px' }}>
+      {userHoH && (
+      <button
+        type="button"
+        className="button primary-btn sm-round-btn"
+        onClick={removeHM}
+      >
+        <i className="fas fa-ban" />
+      </button>
+      )}
       {hm.name}
       {userHoH && (
-        <>
-          <button
-            type="button"
-            style={{ fontSize: '60%' }}
-            className="button primary-btn sm-round-btn"
-            onClick={promoteHM}
-          >
-            <i className="fas fa-crown" />
-          </button>
-          <button
-            type="button"
-            className="button primary-btn sm-round-btn"
-            onClick={removeHM}
-          >
-            <i className="fas fa-ban" />
-          </button>
-        </>
+      <button
+        type="button"
+        style={{ fontSize: '60%' }}
+        className="button primary-btn sm-round-btn"
+        onClick={promoteHM}
+      >
+        <i className="fas fa-crown" />
+      </button>
       )}
     </ButtonContainer>
   );

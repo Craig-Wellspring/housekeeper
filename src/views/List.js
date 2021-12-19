@@ -142,7 +142,7 @@ export default function List() {
                   }-btn`}
                   onClick={listNameEdit}
                 >
-                  <i className={`fas fa-${showNameForm ? 'check' : 'edit'}`} />
+                  <i className={`fas fa-${showNameForm ? 'check' : 'pen'}`} />
                 </button>
               )}
               {showDelete && (

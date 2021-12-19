@@ -160,13 +160,13 @@ export default function HouseholdSelect({ setHHID }) {
           <ButtonTray>
             <SubmitButton
               type="submit"
-              className="button sm-round-btn primary-btn"
+              className="button round-btn primary-btn"
             >
               <i className="fas fa-check" />
             </SubmitButton>
             <SubmitButton
               type="button"
-              className="button sm-round-btn primary-btn"
+              className="button round-btn primary-btn"
               onClick={() => setShowCreate(false)}
             >
               <i className="fas fa-times" />
@@ -195,13 +195,13 @@ export default function HouseholdSelect({ setHHID }) {
           <ButtonTray>
             <SubmitButton
               type="submit"
-              className="button sm-round-btn primary-btn"
+              className="button round-btn primary-btn"
             >
               <i className="fas fa-check" />
             </SubmitButton>
             <SubmitButton
               type="button"
-              className="button sm-round-btn primary-btn"
+              className="button round-btn primary-btn"
               onClick={() => setShowJoin(false)}
             >
               <i className="fas fa-times" />
