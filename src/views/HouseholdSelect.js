@@ -45,7 +45,7 @@ const modalStyle = {
     alignItems: 'center',
     height: '350px',
     backgroundColor: '#1e2024',
-    color: 'white',
+    color: '#DEF2FF',
   },
 };
 

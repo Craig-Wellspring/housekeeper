@@ -12,7 +12,7 @@ export const CategoryLabel = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-size: 120%;
+  font-size: 140%;
   text-decoration: underline;
   text-shadow: 2px 2px black;
 `;

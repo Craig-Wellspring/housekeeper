@@ -118,7 +118,7 @@ export default function Pin({
           style={{ width: '30px', height: '30px' }}
           htmlFor={`btn-check ${data.id}`}
         >
-          <i className={`fas fa-${isChecked ? 'check' : 'times'}`} />
+          <i className={`fas fa-${isChecked ? 'check' : ''}`} />
         </label>
         <SignatureContainer>
           <i className="fas fa-signature" />

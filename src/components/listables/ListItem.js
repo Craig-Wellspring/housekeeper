@@ -72,7 +72,7 @@ function ListItem({
         style={{ width: '30px', height: '30px' }}
         htmlFor={`btn-check ${data.id}`}
       >
-        <i className={`fas fa-${isChecked ? 'check' : 'times'}`} />
+        <i className={`fas fa-${isChecked ? 'check' : ''}`} />
       </label>
       {showEditForm ? (
         <EditInput type="text" value={editInput} onChange={handleChange} />
