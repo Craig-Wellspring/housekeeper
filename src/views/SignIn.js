@@ -5,7 +5,7 @@ import { Panel, PanelTitle } from '../components/StyledComponents';
 export default function SignIn() {
   return (
     <Panel>
-      <PanelTitle>Welcome! Sign In!</PanelTitle>
+      <PanelTitle>Housekeeper</PanelTitle>
       <SignInButton />
     </Panel>
   );

@@ -1,14 +1,17 @@
 import { supabase } from '../auth';
-import { getUserHHID, getUserHMID } from './housemates-data';
+import { getHousemate, getUserHHID, getUserHMID } from './households-data';
 
 const currentListType = () => window.location.pathname.split('/')[1];
 const currentListID = () => window.location.pathname.split('/')[2];
+const sortLists = (a, b) => a.name.localeCompare(b.name);
 
 const getLists = async () => {
-  const hhid = await getUserHHID();
-  const { data } = await supabase.from('lists').select('*').eq('hh_id', hhid);
+  const hm = await getHousemate();
+  const { data } = await supabase.from('lists').select('*').eq('hh_id', hm.hh_id);
+  const filteredLists = data.filter((list) => !list.private || list.hm_id === hm.id);
+  const sortedLists = filteredLists.sort(sortLists);
 
-  return data;
+  return sortedLists;
 };
 
 const getListByType = async () => {
@@ -53,19 +56,6 @@ const deleteList = async (listID) => {
   await supabase.from('lists').delete().eq('id', listID);
 };
 
-const generateLists = async () => {
-  const hhid = await getUserHHID();
-  await supabase.from('lists').insert([
-    { hh_id: hhid, type: 'todo', name: 'To-Do' },
-    { hh_id: hhid, type: 'grocery', name: 'Groceries' },
-    { hh_id: hhid, type: 'shopping', name: 'Shopping' },
-    { hh_id: hhid, type: 'maintenance', name: 'Maintenance' },
-    { hh_id: hhid, type: 'cleaning', name: 'Cleaning' },
-    { hh_id: hhid, type: 'bulletin', name: 'Bulletin Board' },
-    { hh_id: hhid, type: 'pets', name: 'Pets' },
-  ]);
-};
-
 const setListName = async (id, string) => {
   await supabase
     .from('lists')
@@ -90,13 +80,13 @@ const setListPrivate = async (id, bool) => {
 export {
   currentListType,
   currentListID,
+  sortLists,
   getLists,
   getListByType,
   getListByID,
   getListID,
   createList,
   deleteList,
-  generateLists,
   setListName,
   setListHidden,
   setListPrivate,

@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { createHousehold, validateJoinCode } from '../api/data/households-data';
-import { getHousemate, joinHousehold } from '../api/data/housemates-data';
+import PropTypes from 'prop-types';
+import {
+  createHousehold, validateJoinCode, getUserHMID, joinHousehold, increaseHMCount,
+} from '../api/data/households-data';
 import { Panel, PanelTitle } from '../components/StyledComponents';
 
 const Form = styled.form``;
@@ -41,7 +43,9 @@ const modalStyle = {
     gap: '20px',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '300px',
+    height: '350px',
+    backgroundColor: '#1e2024',
+    color: 'white',
   },
 };
 
@@ -57,7 +61,7 @@ const JoinError = styled.div`
 `;
 const joinError = 'This code did not match any Households';
 
-export default function HouseholdSelect() {
+export default function HouseholdSelect({ setHHID }) {
   const history = useHistory();
 
   const [error, setError] = useState(false);
@@ -68,21 +72,22 @@ export default function HouseholdSelect() {
   const [showJoin, setShowJoin] = useState(false);
   const [joinFormInput, setJoinFormInput] = useState('');
 
-  const getHousemateID = async () => {
-    const mate = await getHousemate();
-    setCreateFormInput((prevState) => ({
-      ...prevState,
-      HoH_id: mate.id,
-    }));
-  };
-
-  useEffect(() => {
-    getHousemateID();
+  useEffect(async () => {
+    let isMounted = true;
+    const id = await getUserHMID();
+    if (isMounted) {
+      setCreateFormInput((prevState) => ({
+        ...prevState,
+        HoH_id: id,
+      }));
+    }
+    return () => { isMounted = false; };
   }, []);
 
   const handleCreateSubmit = async (e) => {
     e.preventDefault();
-    await createHousehold(createFormInput.name, createFormInput.HoH_id);
+    const HHID = await createHousehold(createFormInput.name, createFormInput.HoH_id);
+    setHHID(HHID);
     history.push('/select');
   };
 
@@ -100,9 +105,11 @@ export default function HouseholdSelect() {
 
   const handleJoinSubmit = async (e) => {
     e.preventDefault();
-    const hhID = await validateJoinCode(joinFormInput);
-    if (hhID) {
-      await joinHousehold(hhID);
+    const HHID = await validateJoinCode(joinFormInput);
+    if (HHID) {
+      await joinHousehold(HHID);
+      await increaseHMCount(HHID);
+      setHHID(HHID);
       history.push('/select');
     } else {
       setError(true);
@@ -120,14 +127,14 @@ export default function HouseholdSelect() {
         <CreateButton
           type="button"
           onClick={() => setShowCreate(true)}
-          className="btn btn-success"
+          className="button text-btn primary-btn"
         >
           Create
         </CreateButton>
         <JoinButton
           type="button"
           onClick={openJoinModal}
-          className="btn btn-primary"
+          className="button text-btn primary-btn"
         >
           Join
         </JoinButton>
@@ -153,16 +160,16 @@ export default function HouseholdSelect() {
           <ButtonTray>
             <SubmitButton
               type="submit"
-              className="btn btn-success"
+              className="button sm-round-btn primary-btn"
             >
-              Submit
+              <i className="fas fa-check" />
             </SubmitButton>
             <SubmitButton
               type="button"
-              className="btn btn-danger"
+              className="button sm-round-btn primary-btn"
               onClick={() => setShowCreate(false)}
             >
-              X
+              <i className="fas fa-times" />
             </SubmitButton>
           </ButtonTray>
         </Form>
@@ -188,16 +195,16 @@ export default function HouseholdSelect() {
           <ButtonTray>
             <SubmitButton
               type="submit"
-              className="btn btn-success"
+              className="button sm-round-btn primary-btn"
             >
-              Submit
+              <i className="fas fa-check" />
             </SubmitButton>
             <SubmitButton
               type="button"
-              className="btn btn-danger"
+              className="button sm-round-btn primary-btn"
               onClick={() => setShowJoin(false)}
             >
-              X
+              <i className="fas fa-times" />
             </SubmitButton>
           </ButtonTray>
         </Form>
@@ -205,3 +212,7 @@ export default function HouseholdSelect() {
     </>
   );
 }
+
+HouseholdSelect.propTypes = {
+  setHHID: PropTypes.func.isRequired,
+};

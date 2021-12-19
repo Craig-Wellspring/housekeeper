@@ -7,7 +7,7 @@ const Button = styled.button``;
 export default function SettingsButton() {
   const history = useHistory();
   return (
-    <Button className="btn btn-secondary" onClick={() => history.push('/settings')}>
+    <Button className="button primary-btn round-btn" onClick={() => history.push('/settings')}>
       <i className="fas fa-cog" />
     </Button>
   );

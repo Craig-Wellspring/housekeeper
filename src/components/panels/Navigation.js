@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import SignOutButton from '../buttons/SignOutButton';
 import SettingsButton from '../buttons/SettingsButton';
 import ListViewButton from '../buttons/ListViewButton';
-import { getUserHHID, getUserHMID } from '../../api/data/housemates-data';
+// import { supabase } from '../../api/auth';
 
 const NavBar = styled.div`
   display: flex;
@@ -11,26 +12,36 @@ const NavBar = styled.div`
   width: 100%;
   justify-content: space-between;
 
-  padding: 10px;
+  padding: 6px;
 `;
 
-export default function Navigation() {
-  const [hhID, sethhID] = useState('');
-
-  useEffect(() => {
-    getUserHHID().then(sethhID);
-  }, []);
-
-  const test = async () => {
-    getUserHMID().then(console.warn);
-  };
+export default function Navigation({ HHID }) {
+  // const test = async () => {
+  //   const subs = supabase.getSubscriptions();
+  //   const aSubs = subs.filter((sub) => sub.isJoined());
+  //   aSubs.forEach((sub) => console.warn(sub.topic));
+  // };
 
   return (
     <NavBar>
-      <SettingsButton />
-      <button type="button" className="btn btn-warning" onClick={test}>X</button>
-      {hhID && <ListViewButton />}
+      {/* <button type="button" className="btn btn-warning" onClick={test}>X</button> */}
+      {HHID ? (
+        <>
+          <SettingsButton />
+          <ListViewButton />
+        </>
+      ) : (
+        <div />
+      )}
       <SignOutButton />
     </NavBar>
   );
 }
+
+Navigation.propTypes = {
+  HHID: PropTypes.number,
+};
+
+Navigation.defaultProps = {
+  HHID: null,
+};

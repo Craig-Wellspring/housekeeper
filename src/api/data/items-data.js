@@ -1,4 +1,5 @@
 import { supabase } from '../auth';
+import { getUserHMID } from './households-data';
 import { getListID } from './lists-data';
 
 const getItems = async () => {
@@ -19,7 +20,8 @@ const getItem = async (itemID) => {
 
 const createItem = async (name) => {
   const listID = await getListID();
-  await supabase.from('items').insert({ list_id: listID, name });
+  const HMID = await getUserHMID();
+  await supabase.from('items').insert({ list_id: listID, hm_id: HMID, name });
 
   return getItems();
 };

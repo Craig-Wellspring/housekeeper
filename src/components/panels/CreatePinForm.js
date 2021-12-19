@@ -5,10 +5,17 @@ import { createItem } from '../../api/data/items-data';
 
 const Form = styled.form`
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
 `;
 
-export default function CreateItemForm({ setItems }) {
+const TextInput = styled.textarea`
+  width: 250px;
+`;
+
+export default function CreatePinForm({ setItems }) {
   const [formInput, setFormInput] = useState('');
 
   const handleChange = (e) => {
@@ -23,21 +30,21 @@ export default function CreateItemForm({ setItems }) {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <input
-        type="text"
+      <TextInput
         name="name"
+        rows="6"
         onChange={handleChange}
         value={formInput}
-        placeholder="Add Item"
+        placeholder="Create a New Pin"
         required
       />
-      <button type="submit" className="button sm-round-btn primary-btn">
+      <button type="submit" className="button round-btn primary-btn">
         <i className="fas fa-plus" />
       </button>
     </Form>
   );
 }
 
-CreateItemForm.propTypes = {
+CreatePinForm.propTypes = {
   setItems: PropTypes.func.isRequired,
 };

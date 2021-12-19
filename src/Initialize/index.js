@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../api/auth';
+import { getUserHHID } from '../api/data/households-data';
 import Navigation from '../components/panels/Navigation';
 import Routes from '../routes';
 import SignIn from '../views/SignIn';
 
 function Initialize() {
   const [session, setSession] = useState(null);
+  const [HHID, setHHID] = useState(null);
 
   useEffect(() => {
     setSession(supabase.auth.session());
@@ -15,12 +17,26 @@ function Initialize() {
     });
   }, []);
 
+  useEffect(async () => {
+    if (session) {
+      const id = await getUserHHID();
+      setHHID(id);
+    }
+  }, [session]);
+
+  useEffect(async () => {
+    console.warn(HHID);
+    const subs = supabase.getSubscriptions();
+    const aSubs = subs.filter((sub) => sub.isJoined());
+    console.warn(aSubs);
+  }, [HHID]);
+
   return (
     <div className="App">
       {session ? (
         <>
-          <Navigation />
-          <Routes />
+          <Navigation HHID={HHID} />
+          <Routes HHID={HHID} setHHID={setHHID} />
         </>
       ) : (<SignIn />)}
     </div>

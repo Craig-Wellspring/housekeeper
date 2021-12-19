@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { createHousemate, getHousemate } from '../api/data/housemates-data';
+import { createHousemate, getHousemate } from '../api/data/households-data';
 
 export default function Authenticated() {
   const history = useHistory();
