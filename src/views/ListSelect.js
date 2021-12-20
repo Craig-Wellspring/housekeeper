@@ -30,7 +30,6 @@ export default function ListSelect() {
       .from(`lists:hh_id=eq.${HHID}`)
       .on('*', updateLists)
       .subscribe();
-    console.warn(subscription);
     return subscription;
   };
 

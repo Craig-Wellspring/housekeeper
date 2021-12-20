@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { supabase } from '../api/auth';
-import { getUserHHID } from '../api/data/households-data';
+import { getHousemate, getUserHHID } from '../api/data/households-data';
 import Navigation from '../components/panels/Navigation';
 import Routes from '../routes';
 import SignIn from '../views/SignIn';
@@ -8,10 +9,10 @@ import SignIn from '../views/SignIn';
 function Initialize() {
   const [session, setSession] = useState(null);
   const [HHID, setHHID] = useState(null);
+  const history = useHistory();
 
   useEffect(() => {
     setSession(supabase.auth.session());
-
     supabase.auth.onAuthStateChange((e, _session) => {
       setSession(_session);
     });
@@ -24,11 +25,24 @@ function Initialize() {
     }
   }, [session]);
 
+  const updateHM = async (payload) => {
+    if (payload.new.hh_id !== payload.old.hh_id) {
+      history.push('/');
+      setHHID(null);
+    }
+  };
+
+  const subscribeToHousehold = async () => {
+    const HM = await getHousemate();
+    const subscription = supabase
+      .from(`housemates:id=eq.${HM.id}`)
+      .on('*', updateHM)
+      .subscribe();
+    return subscription;
+  };
+
   useEffect(async () => {
-    console.warn(HHID);
-    const subs = supabase.getSubscriptions();
-    const aSubs = subs.filter((sub) => sub.isJoined());
-    console.warn(aSubs);
+    if (HHID) { subscribeToHousehold(); }
   }, [HHID]);
 
   return (
