@@ -43,6 +43,13 @@ const modalStyle = {
     gap: '20px',
     justifyContent: 'center',
     alignItems: 'center',
+
+    position: 'absolute',
+    left: '50%',
+    transform: 'translate(-50%)',
+    // marginLeft: '-175px',
+
+    width: '350px',
     height: '350px',
     backgroundColor: '#1e2024',
     color: '#DEF2FF',
