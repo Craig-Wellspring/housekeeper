@@ -10,6 +10,7 @@ const NavBar = styled.div`
   display: flex;
   gap: 10px;
   width: 100%;
+  max-width: 400px;
   justify-content: space-between;
 
   padding: 6px;
@@ -34,6 +35,7 @@ export default function Navigation({ HHID }) {
         <div />
       )}
       <SignOutButton />
+      {!HHID && <div />}
     </NavBar>
   );
 }
