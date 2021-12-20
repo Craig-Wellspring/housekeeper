@@ -43,6 +43,10 @@ const LabelPanel = styled.div`
   gap: 10px;
 `;
 
+const InviteCode = styled.div`
+  font-size: 140%;
+`;
+
 export default function Settings({ setHHID }) {
   const history = useHistory();
 
@@ -245,7 +249,7 @@ export default function Settings({ setHHID }) {
             {userHoH && (
             <button
               type="button"
-              className="button sm-round-btn primary-btn"
+              className="button round-btn primary-btn"
               onClick={regenerateCode}
             >
               <i className="fas fa-recycle" />
@@ -259,11 +263,11 @@ export default function Settings({ setHHID }) {
                 setIsCopied(false);
               }}
             >
-              {inviteCode}
+              <InviteCode>{inviteCode}</InviteCode>
             </button>
             <button
               type="button"
-              className={`button sm-round-btn ${isCopied ? 'secondary' : 'primary'}-btn`}
+              className={`button round-btn ${isCopied ? 'secondary' : 'primary'}-btn`}
               onClick={copyCode}
             >
               <i
@@ -279,7 +283,7 @@ export default function Settings({ setHHID }) {
             className="button text-btn secondary-btn"
             onClick={() => setShowCode(true)}
           >
-            Show Code
+            <InviteCode>Show Code</InviteCode>
           </button>
         )}
       </Section>

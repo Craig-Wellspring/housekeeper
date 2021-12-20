@@ -21,6 +21,13 @@ const Icon = styled.div`
   &:active {
     background-image: linear-gradient(to left bottom, #993c73, #9a4e99, #8e65bf, #6e7de2, #0096ff);
     color: #DEF2FF;
+    transform: scale(1.1);
+    box-shadow: 6px 6px 6px 0px black;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 6px 6px 6px 0px black;
   }
 `;
 
