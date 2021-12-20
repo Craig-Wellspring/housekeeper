@@ -54,7 +54,7 @@ export default function ListSelect() {
       <PanelTitle>List Select</PanelTitle>
       <ListContainer>
         {lists?.map((list) => (
-          <ListIcon key={list.id} list={list} />
+          <ListIcon key={list.id} list={list} tabIndex="0" />
         ))}
         <AddListButton setLists={setLists} />
       </ListContainer>
