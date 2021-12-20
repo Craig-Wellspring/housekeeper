@@ -32,6 +32,8 @@ function Initialize() {
     }
   };
 
+  let sub;
+
   const subscribeToHousehold = async () => {
     const HM = await getHousemate();
     const subscription = supabase
@@ -42,7 +44,11 @@ function Initialize() {
   };
 
   useEffect(async () => {
-    if (HHID) { subscribeToHousehold(); }
+    if (HHID) {
+      sub = subscribeToHousehold();
+    } else {
+      supabase.removeSubscription(sub);
+    }
   }, [HHID]);
 
   return (
@@ -52,7 +58,9 @@ function Initialize() {
           <Navigation HHID={HHID} />
           <Routes HHID={HHID} setHHID={setHHID} />
         </>
-      ) : (<SignIn />)}
+      ) : (
+        <SignIn />
+      )}
     </div>
   );
 }
