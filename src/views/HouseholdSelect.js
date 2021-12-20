@@ -47,7 +47,6 @@ const modalStyle = {
     position: 'absolute',
     left: '50%',
     transform: 'translate(-50%)',
-    // marginLeft: '-175px',
 
     width: '350px',
     height: '350px',
