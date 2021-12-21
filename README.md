@@ -1,7 +1,9 @@
 # Housekeeper
 #### Developer: [Craig Wellspring](https://github.com/Craig-Wellspring/)
 
-<img width="64" height="64" alt="site logo" src="./public/favicon.ico">
+<div style="text-align:center">
+  <img width="64" height="64" alt="site logo" src="./public/favicon.ico">
+</div>
 
 ### [Site Link](https://house-keeper.netlify.app/)
 
