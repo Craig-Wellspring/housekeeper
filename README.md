@@ -1,16 +1,32 @@
 # Housekeeper
 #### Developer: [Craig Wellspring](https://github.com/Craig-Wellspring/)
 
-### [Netlify](https://house-keeper.netlify.app/)
+<img width="64" height="64" alt="site logo" src="./public/favicon.ico">
 
-### [Wireframe](https://www.figma.com/file/MdTtCdX4rmRrN70ZC5pi1R/Housekeeper-Wireframe)
+### [Site Link](https://house-keeper.netlify.app/)
 
-### [Flow Diagram](https://www.figma.com/file/zRGYj0VTE6fcsxdOgI1n79/Housekeeper-Diagram)
+## Purpose
+* This app was created for an individual or multiple housemates to keep track of everything required to manage a household. Users are able to update their Household lists and see changes from other housemates in real time.
 
-### [ERD](https://dbdiagram.io/d/61a58f0c8c901501c0d86f0c)
+## Features: 
+#### **CRUD**: 
+* Create, Update, and Delete to-do items and messages on categorized lists
+* Create, Update, and Delete custom to-do lists
+* Create, Update, and Delete Households
+* Make Custom Lists public or private to hide them from other housemates
+* Show/Hide lists in the List View from the Settings page
+#### **Authentication**: 
+* Log in and authenticate using Google
+* Users are able to invite others to join their Household via randomly generated invite code
+* The Head of Household (Admin user) can remove Housemates from their Household or pass Head of Household to another user
+#### **Real-Time Data**: 
+* All lists and list items update in real-time for all members of a Household
 
-### [GitHub](https://github.com/Craig-Wellspring/housekeeper)
+## Relevant Links:
+* [GitHub](https://github.com/Craig-Wellspring/housekeeper)
 
-### [MVP Project Board](https://github.com/Craig-Wellspring/housekeeper/projects/1)
+* [Wireframe](https://www.figma.com/file/MdTtCdX4rmRrN70ZC5pi1R/Housekeeper-Wireframe)
 
-### [Stretch Project Board](https://github.com/Craig-Wellspring/housekeeper/projects/2)
+* [Flow Diagram](https://www.figma.com/file/zRGYj0VTE6fcsxdOgI1n79/Housekeeper-Diagram)
+
+* [ERD](https://dbdiagram.io/d/61a58f0c8c901501c0d86f0c)
