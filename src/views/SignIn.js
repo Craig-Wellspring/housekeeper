@@ -6,7 +6,7 @@ import logo from '../reference/favicon.ico';
 export default function SignIn() {
   return (
     <Panel>
-      <img width="64" height="64" alt="Site Logo" src={logo} />
+      <img width="128" height="128" alt="Site Logo" src={logo} />
       <PanelTitle>Housekeeper</PanelTitle>
       <SignInButton />
     </Panel>
