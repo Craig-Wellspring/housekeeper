@@ -83,7 +83,7 @@ export const PanelTitle = styled.div`
   font-size: 30pt;
   font-weight: 320;
   text-align: center;
-  background: linear-gradient(to left bottom, #993c73, #9a4e99, #8e65bf, #6e7de2, #0096ff);
+  background: linear-gradient(to right top, #993c73, #9a4e99, #8e65bf, #6e7de2, #0096ff);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-stroke: 3px transparent;
