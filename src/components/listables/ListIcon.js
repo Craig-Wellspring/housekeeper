@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import listIcons from '../../JSON/listIcons.json';
+import listIcons from '../../reference/listIcons.json';
 import { Icon } from '../StyledComponents';
 
 function ListIcon({ list }) {
