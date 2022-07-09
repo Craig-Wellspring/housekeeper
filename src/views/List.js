@@ -84,8 +84,8 @@ export default function List() {
   }, []);
 
   useEffect(() => {
-    setIncompleteItems(items?.filter((item) => !item.completed));
-    setCompleteItems(items?.filter((item) => item.completed));
+    setIncompleteItems(items?.filter((item) => !item.completed).sort((a, b) => a.name.localeCompare(b.name)));
+    setCompleteItems(items?.filter((item) => item.completed).sort((a, b) => a.name.localeCompare(b.name)));
   }, [items]);
 
   const handlePrivatize = async () => {
@@ -117,7 +117,9 @@ export default function List() {
         {currentListType() === 'custom' && (
           <button
             type="button"
-            className={`button sm-round-btn ${isPrivate ? 'secondary' : 'primary'}-btn`}
+            className={`button sm-round-btn ${
+              isPrivate ? 'secondary' : 'primary'
+            }-btn`}
             onClick={handlePrivatize}
           >
             <i className={`fas fa-${isPrivate ? 'lock' : 'unlock'}`} />
@@ -163,7 +165,9 @@ export default function List() {
       <ButtonContainer>
         <button
           type="button"
-          className={`button sm-round-btn ${showHidden ? 'secondary' : 'primary'}-btn`}
+          className={`button sm-round-btn ${
+            showHidden ? 'secondary' : 'primary'
+          }-btn`}
           onClick={() => {
             setShowHidden(!showHidden);
           }}
@@ -172,7 +176,9 @@ export default function List() {
         </button>
         <button
           type="button"
-          className={`button sm-round-btn ${showEdit ? 'secondary' : 'primary'}-btn`}
+          className={`button sm-round-btn ${
+            showEdit ? 'secondary' : 'primary'
+          }-btn`}
           onClick={() => {
             setShowEdit(!showEdit);
           }}
@@ -181,7 +187,9 @@ export default function List() {
         </button>
         <button
           type="button"
-          className={`button sm-round-btn ${showDelete ? 'secondary' : 'primary'}-btn`}
+          className={`button sm-round-btn ${
+            showDelete ? 'secondary' : 'primary'
+          }-btn`}
           onClick={() => {
             setShowDelete(!showDelete);
           }}
@@ -201,16 +209,15 @@ export default function List() {
           />
         ))}
         {showHidden && <CategoryLabel>Complete</CategoryLabel>}
-        {showHidden
-          && completeItems?.map((item) => (
-            <ListItem
-              key={item.id}
-              data={item}
-              setItems={setItems}
-              showEdit={showEdit}
-              showDelete={showDelete}
-            />
-          ))}
+        {showHidden && completeItems?.map((item) => (
+          <ListItem
+            key={item.id}
+            data={item}
+            setItems={setItems}
+            showEdit={showEdit}
+            showDelete={showDelete}
+          />
+        ))}
       </ListContainer>
     </Panel>
   );
