@@ -203,6 +203,7 @@ export default function Settings({ setHHID }) {
         {showHMForm ? (
           <input
             type="text"
+            autoComplete="off"
             value={HMFormInput}
             onChange={(e) => setHMFormInput(e.target.value)}
           />
@@ -227,6 +228,7 @@ export default function Settings({ setHHID }) {
         {showHHForm ? (
           <input
             type="text"
+            autoComplete="off"
             value={HHFormInput}
             onChange={(e) => setHHFormInput(e.target.value)}
           />

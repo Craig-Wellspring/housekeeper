@@ -8,11 +8,21 @@ const Form = styled.form`
   gap: 10px;
 `;
 
-export default function CreateItemForm({ setItems }) {
+export default function CreateItemForm({
+  setItems,
+  allItems,
+  setSearchMatches,
+}) {
   const [formInput, setFormInput] = useState('');
 
   const handleChange = (e) => {
     setFormInput(e.target.value);
+
+    setSearchMatches(
+      allItems.filter((i) =>
+        i.name.toLowerCase().includes(e.target.value.toLowerCase()),
+      ),
+    );
   };
 
   const handleSubmit = (e) => {
@@ -25,10 +35,11 @@ export default function CreateItemForm({ setItems }) {
     <Form onSubmit={handleSubmit}>
       <input
         type="text"
+        autoComplete="off"
         name="name"
         onChange={handleChange}
         value={formInput}
-        placeholder="Add Item"
+        placeholder="Add or Search"
         required
       />
       <button type="submit" className="button sm-round-btn primary-btn">
@@ -40,4 +51,10 @@ export default function CreateItemForm({ setItems }) {
 
 CreateItemForm.propTypes = {
   setItems: PropTypes.func.isRequired,
+  setSearchMatches: PropTypes.func.isRequired,
+  allItems: PropTypes.arrayOf(PropTypes.object),
+};
+
+CreateItemForm.defaultProps = {
+  allItems: [],
 };

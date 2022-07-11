@@ -52,9 +52,7 @@ const Signature = styled.div`
   text-decoration: underline;
 `;
 
-export default function Pin({
-  data, setItems, showEdit, showDelete,
-}) {
+export default function Pin({ data, setItems, showEdit, showDelete }) {
   const [isChecked, setIsChecked] = useState(data.completed);
   const [showEditForm, setShowEditForm] = useState(false);
   const [editInput, setEditInput] = useState('');
@@ -114,8 +112,9 @@ export default function Pin({
           checked={isChecked}
         />
         <label
-          className={`border-square${isChecked ? '-fill' : ''}`}
-          style={{ width: '30px', height: '30px' }}
+          className={`button sm-round-btn ${
+            isChecked ? 'secondary' : 'primary'
+          }-btn`}
           htmlFor={`btn-check ${data.id}`}
         >
           <i className={`fas fa-${isChecked ? 'check' : ''}`} />

@@ -45,10 +45,8 @@ function Initialize() {
 
   useEffect(async () => {
     if (HHID) {
-      sub = subscribeToHousehold();
-    } else {
-      supabase.removeSubscription(sub);
-    }
+      subscribeToHousehold();
+    } else if (sub) supabase.removeSubscription(sub);
   }, [HHID]);
 
   return (
