@@ -26,9 +26,7 @@ const EditInput = styled.input`
   padding: 2px;
 `;
 
-function ListItem({
-  data, setItems, showEdit, showDelete,
-}) {
+function ListItem({ data, setItems, showEdit, showDelete }) {
   const [isChecked, setIsChecked] = useState(data.completed);
   const [showEditForm, setShowEditForm] = useState(false);
   const [editInput, setEditInput] = useState('');
@@ -68,13 +66,20 @@ function ListItem({
         checked={isChecked}
       />
       <label
-        className={`button sm-round-btn ${isChecked ? 'secondary' : 'primary'}-btn`}
+        className={`button sm-round-btn ${
+          isChecked ? 'secondary' : 'primary'
+        }-btn`}
         htmlFor={`btn-check ${data.id}`}
       >
         <i className={`fas fa-${isChecked ? 'check' : ''}`} />
       </label>
       {showEditForm ? (
-        <EditInput type="text" value={editInput} onChange={handleChange} />
+        <EditInput
+          type="text"
+          autoComplete="off"
+          value={editInput}
+          onChange={handleChange}
+        />
       ) : (
         data.name
       )}

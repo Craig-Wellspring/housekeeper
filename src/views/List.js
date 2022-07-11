@@ -37,8 +37,9 @@ export default function List() {
   const [isPrivate, setIsPrivate] = useState(false);
 
   const [items, setItems] = useState([]);
-  const [completeItems, setCompleteItems] = useState([]);
+  const [searchMatches, setSearchMatches] = useState([]);
   const [incompleteItems, setIncompleteItems] = useState([]);
+  const [completeItems, setCompleteItems] = useState([]);
 
   const [showHidden, setShowHidden] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -72,6 +73,7 @@ export default function List() {
     }
     if (isMounted) {
       setItems(listItems);
+      setSearchMatches(listItems);
       setIsPrivate(list?.private);
       setName(list?.name);
       setNameFormInput(list?.name);
@@ -84,9 +86,17 @@ export default function List() {
   }, []);
 
   useEffect(() => {
-    setIncompleteItems(items?.filter((item) => !item.completed).sort((a, b) => a.name.localeCompare(b.name)));
-    setCompleteItems(items?.filter((item) => item.completed).sort((a, b) => a.name.localeCompare(b.name)));
-  }, [items]);
+    setIncompleteItems(
+      searchMatches
+        ?.filter((item) => !item.completed)
+        .sort((a, b) => a.name.localeCompare(b.name)),
+    );
+    setCompleteItems(
+      searchMatches
+        ?.filter((item) => item.completed)
+        .sort((a, b) => a.name.localeCompare(b.name)),
+    );
+  }, [items, searchMatches]);
 
   const handlePrivatize = async () => {
     await setListPrivate(currentListID(), !isPrivate);
@@ -112,7 +122,7 @@ export default function List() {
   };
 
   return (
-    <Panel>
+    <Panel style={{ width: '90%' }}>
       <ButtonContainer>
         {currentListType() === 'custom' && (
           <button
@@ -127,6 +137,7 @@ export default function List() {
         )}
         {showNameForm ? (
           <NameInput
+            autoComplete="off"
             value={nameFormInput}
             onChange={(e) => setNameFormInput(e.target.value)}
           />
@@ -161,7 +172,11 @@ export default function List() {
         </ButtonContainer>
       </ButtonContainer>
 
-      <CreateItemForm setItems={setItems} />
+      <CreateItemForm
+        setItems={setItems}
+        allItems={items}
+        setSearchMatches={setSearchMatches}
+      />
       <ButtonContainer>
         <button
           type="button"
@@ -209,15 +224,16 @@ export default function List() {
           />
         ))}
         {showHidden && <CategoryLabel>Complete</CategoryLabel>}
-        {showHidden && completeItems?.map((item) => (
-          <ListItem
-            key={item.id}
-            data={item}
-            setItems={setItems}
-            showEdit={showEdit}
-            showDelete={showDelete}
-          />
-        ))}
+        {showHidden &&
+          completeItems?.map((item) => (
+            <ListItem
+              key={item.id}
+              data={item}
+              setItems={setItems}
+              showEdit={showEdit}
+              showDelete={showDelete}
+            />
+          ))}
       </ListContainer>
     </Panel>
   );

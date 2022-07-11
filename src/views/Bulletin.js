@@ -56,8 +56,8 @@ export default function Bulletin() {
   }, []);
 
   useEffect(() => {
-    setIncompleteItems(items?.filter((item) => !item.completed));
-    setCompleteItems(items?.filter((item) => item.completed));
+    setIncompleteItems(items?.filter((item) => !item.completed).sort((a, b) => a.created_at.localeCompare(b.created_at)));
+    setCompleteItems(items?.filter((item) => item.completed).sort((a, b) => a.created_at.localeCompare(b.created_at)));
   }, [items]);
 
   return (

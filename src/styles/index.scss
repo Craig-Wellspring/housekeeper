@@ -80,6 +80,7 @@ body {
 
 input[type=text] {
   color: var(--fontColor);
+  color-scheme: dark;
   text-align: center;
   background: 
     linear-gradient(var(--bgColor), var(--bgColor)) padding-box,
@@ -122,3 +123,9 @@ textarea, input[type=text], .button {
   border-radius: 6px;
   box-shadow: 3px 3px 3px black;
 }
+
+input:-webkit-autofill,
+  input:-webkit-autofill:focus {
+    outline: 3px solid #8e65bf;
+    transition: background-color 600000s 0s, color 600000s 0s;
+  }

@@ -35,8 +35,9 @@ export default function ListSetting({ data }) {
         checked={isChecked}
       />
       <label
-        className={`border-square${isChecked ? '-fill' : ''}`}
-        style={{ width: '30px', height: '30px' }}
+        className={`button sm-round-btn ${
+          isChecked ? 'secondary' : 'primary'
+        }-btn`}
         htmlFor={`btn-check ${data.id}`}
       >
         <i className={`fas fa-${isChecked ? 'check' : ''}`} />

@@ -158,6 +158,7 @@ export default function HouseholdSelect({ setHHID }) {
             <NameInput
               name="name"
               type="text"
+              autoComplete="off"
               onChange={handleCreateChange}
               value={createFormInput.name}
               required
@@ -193,6 +194,7 @@ export default function HouseholdSelect({ setHHID }) {
             <NameInput
               name="code"
               type="text"
+              autoComplete="off"
               onChange={handleJoinChange}
               value={joinFormInput}
             />
