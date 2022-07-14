@@ -11,6 +11,7 @@ import { ButtonContainer, Checkbox } from '../StyledComponents';
 
 const Item = styled.div`
   width: 100%;
+  max-width: 500px;
   display: flex;
   gap: 10px;
   justify-content: space-between;
@@ -51,6 +52,10 @@ function ListItem({ data, setItems, showEdit, showDelete }) {
     setShowEditForm(!showEditForm);
   };
 
+  const cancelEdit = () => {
+    setShowEditForm(false);
+  };
+
   const handleDelete = () => {
     deleteItem(data.id).then(setItems);
   };
@@ -85,15 +90,24 @@ function ListItem({ data, setItems, showEdit, showDelete }) {
       )}
       <ButtonContainer>
         {showEdit && (
-          <button
-            type="button"
-            className={`button sm-round-btn ${
-              showEditForm ? 'secondary' : 'primary'
-            }-btn`}
-            onClick={handleEdit}
-          >
-            <i className={`fas fa-${showEditForm ? 'check' : 'pen'}`} />
-          </button>
+          <>
+            {showEditForm && (
+              <button
+                type="button"
+                onClick={cancelEdit}
+                className="button sm-round-btn primary-btn"
+              >
+                <i className="fas fa-times" />
+              </button>
+            )}
+            <button
+              type="button"
+              className="button sm-round-btn primary-btn"
+              onClick={handleEdit}
+            >
+              <i className={`fas fa-${showEditForm ? 'check' : 'pen'}`} />
+            </button>
+          </>
         )}
         {showDelete && (
           <button
