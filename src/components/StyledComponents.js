@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
   width: 100%;
 `;
@@ -32,7 +33,14 @@ export const Icon = styled.div`
   gap: 10px;
   align-content: center;
   justify-content: center;
-  background-image: linear-gradient(to right top, #993c73, #9a4e99, #8e65bf, #6e7de2, #0096ff);
+  background-image: linear-gradient(
+    to right top,
+    #993c73,
+    #9a4e99,
+    #8e65bf,
+    #6e7de2,
+    #0096ff
+  );
   width: 120px;
   height: 120px;
 
@@ -43,12 +51,19 @@ export const Icon = styled.div`
   border-radius: 6px;
   box-shadow: 4px 4px 4px black;
   margin: 10px;
-  
+
   transition: transform 0.2s, box-shadow 0.2s;
-  
+
   &:active {
-    background-image: linear-gradient(to left bottom, #993c73, #9a4e99, #8e65bf, #6e7de2, #0096ff);
-    color: #DEF2FF;
+    background-image: linear-gradient(
+      to left bottom,
+      #993c73,
+      #9a4e99,
+      #8e65bf,
+      #6e7de2,
+      #0096ff
+    );
+    color: #def2ff;
     transform: scale(1.1);
     box-shadow: 8px 8px 8px 0px black;
   }
@@ -83,9 +98,16 @@ export const PanelTitle = styled.div`
   font-size: 30pt;
   font-weight: 320;
   text-align: center;
-  background: linear-gradient(to right top, #993c73, #9a4e99, #8e65bf, #6e7de2, #0096ff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-stroke: 3px transparent;
+  background: linear-gradient(
+    to right top,
+    #993c73,
+    #9a4e99,
+    #8e65bf,
+    #6e7de2,
+    #0096ff
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke: 3px transparent;
   text-shadow: 3px 3px 3px black;
 `;

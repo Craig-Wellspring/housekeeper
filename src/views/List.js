@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { supabase } from '../api/auth';
-import { getItems } from '../api/data/items-data';
+import { createItem, getItems } from '../api/data/items-data';
 import {
   currentListID,
   currentListType,
@@ -13,7 +13,6 @@ import {
   setListPrivate,
 } from '../api/data/lists-data';
 import ListItem from '../components/listables/ListItem';
-import CreateItemForm from '../components/panels/CreateItemForm';
 import {
   ButtonContainer,
   CategoryLabel,
@@ -27,6 +26,11 @@ const NameInput = styled.input`
   font-size: 120%;
 `;
 
+const Form = styled.form`
+  display: flex;
+  gap: 10px;
+`;
+
 export default function List() {
   const history = useHistory();
 
@@ -35,6 +39,8 @@ export default function List() {
   const [nameFormInput, setNameFormInput] = useState('');
 
   const [isPrivate, setIsPrivate] = useState(false);
+
+  const [formInput, setFormInput] = useState('');
 
   const [items, setItems] = useState([]);
   const [searchMatches, setSearchMatches] = useState([]);
@@ -86,6 +92,14 @@ export default function List() {
   }, []);
 
   useEffect(() => {
+    setSearchMatches(
+      items.filter((i) =>
+        i.name.toLowerCase().includes(formInput.toLowerCase()),
+      ),
+    );
+  }, [items]);
+
+  useEffect(() => {
     setIncompleteItems(
       searchMatches
         ?.filter((item) => !item.completed)
@@ -96,7 +110,7 @@ export default function List() {
         ?.filter((item) => item.completed)
         .sort((a, b) => a.name.localeCompare(b.name)),
     );
-  }, [items, searchMatches]);
+  }, [searchMatches]);
 
   const handlePrivatize = async () => {
     await setListPrivate(currentListID(), !isPrivate);
@@ -119,6 +133,28 @@ export default function List() {
   const handleDelete = async () => {
     await deleteList(currentListID());
     history.push('/select');
+  };
+
+  // Form
+  const handleFormInput = (e) => {
+    setFormInput(e.target.value);
+    setSearchMatches(
+      items.filter((i) =>
+        i.name.toLowerCase().includes(e.target.value.toLowerCase()),
+      ),
+    );
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newItems = await createItem(formInput);
+    setFormInput('');
+    setItems(newItems);
+  };
+
+  const handleClear = () => {
+    setFormInput('');
+    setSearchMatches(items);
   };
 
   return (
@@ -172,11 +208,28 @@ export default function List() {
         </ButtonContainer>
       </ButtonContainer>
 
-      <CreateItemForm
-        setItems={setItems}
-        allItems={items}
-        setSearchMatches={setSearchMatches}
-      />
+      <Form onSubmit={handleSubmit}>
+        <button
+          type="button"
+          onClick={handleClear}
+          className="button sm-round-btn primary-btn"
+        >
+          <i className="fas fa-times" />
+        </button>
+        <input
+          type="text"
+          autoComplete="off"
+          name="name"
+          onChange={handleFormInput}
+          value={formInput}
+          placeholder="Add or Search"
+          required
+        />
+        <button type="submit" className="button sm-round-btn primary-btn">
+          <i className="fas fa-plus" />
+        </button>
+      </Form>
+
       <ButtonContainer>
         <button
           type="button"
@@ -212,6 +265,7 @@ export default function List() {
           <i className="fas fa-trash" />
         </button>
       </ButtonContainer>
+
       <ListContainer>
         {showHidden && <CategoryLabel>Incomplete</CategoryLabel>}
         {incompleteItems?.map((item) => (
