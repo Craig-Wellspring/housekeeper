@@ -15,6 +15,8 @@
 * Create, Update, and Delete Households
 * Make Custom Lists public or private to hide them from other housemates
 * Show/Hide lists in the List View from the Settings page
+* Lists sorted alphabetically
+* Search for existing items
 #### **Authentication**: 
 * Log in and authenticate using Google
 * Users are able to invite others to join their Household via randomly generated invite code
